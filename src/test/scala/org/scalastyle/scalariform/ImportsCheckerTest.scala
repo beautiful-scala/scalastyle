@@ -406,6 +406,12 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
                    |
                    |import my.org.project2.OtherClass
                    |import javax.swing.JTree
+                   |import my.org.project2.xyz.{Aaa => Bba}
+                   |import my.org.project2.xyz.Abc
+                   |import my.org.project2.xyz.{Aac => Bbc}
+                   |import my.org.project2.xyz.{Aab => Bbb}
+                   |import my.org.project2.xyz._
+                   |import my.org.project2.xyz.{Aad => Bbc}
                    |
                    |object Foobar {
                    |}
@@ -413,9 +419,19 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     val expected = List(
       columnError(5, 20, errorKey = errorKey("wrongOrderInSelector"), args = List("Cipher", "Mac")),
-      columnError(6, 0, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang.", "javax.crypto.")),
+      columnError(
+        6,
+        0,
+        errorKey = errorKey("wrongOrderInGroup"),
+        args = List("java.lang.{Long=>JLong,Boolean=>JBoolean}", "javax.crypto.{Mac,Cipher}")
+      ),
       columnError(6, 17, errorKey = errorKey("wrongOrderInSelector"), args = List("Boolean", "Long")),
-      columnError(7, 0, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang._", "java.lang.")),
+      columnError(
+        7,
+        0,
+        errorKey = errorKey("wrongOrderInGroup"),
+        args = List("java.lang._", "java.lang.{Long=>JLong,Boolean=>JBoolean}")
+      ),
       columnError(9, 0, errorKey = errorKey("noEmptyLine")),
       columnError(10, 0, errorKey = errorKey("missingEmptyLine"), args = List("java", "scala")),
       columnError(
@@ -435,6 +451,24 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
         0,
         errorKey = errorKey("wrongGroup"),
         args = List("javax.swing.JTree", "java", "project2")
+      ),
+      columnError(
+        22,
+        0,
+        errorKey = errorKey("wrongOrderInGroup"),
+        args = List("my.org.project2.xyz.Abc", "my.org.project2.xyz.{Aaa=>Bba}")
+      ),
+      columnError(
+        24,
+        0,
+        errorKey = errorKey("wrongOrderInGroup"),
+        args = List("my.org.project2.xyz.{Aab=>Bbb}", "my.org.project2.xyz.{Aac=>Bbc}")
+      ),
+      columnError(
+        25,
+        0,
+        errorKey = errorKey("wrongOrderInGroup"),
+        args = List("my.org.project2.xyz._", "my.org.project2.xyz.{Aab=>Bbb}")
       )
     )
 

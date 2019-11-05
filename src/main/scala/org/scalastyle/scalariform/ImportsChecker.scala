@@ -214,7 +214,7 @@ class ImportOrderChecker extends ScalariformChecker {
     statements.immediateChildren.flatMap { n =>
       val result = n match {
         case ImportClause(_, BlockImportExpr(prefix, selectors), _, _) =>
-          val text = exprToText(prefix.contents)
+          val text = exprToText(prefix.contents, if (lexicographic) selectors.tokens else Nil)
           checkImport(text, n.firstToken.offset) ++ checkSelectors(selectors)
 
         case ImportClause(_, Expr(contents), _, _) =>
@@ -229,13 +229,12 @@ class ImportOrderChecker extends ScalariformChecker {
     }
   }
 
-  private def exprToText(contents: List[ExprElement]): String = {
-    contents
-      .flatMap {
-        case GeneralTokens(toks) => toks.map(_.text)
-        case n: Any              => throw new IllegalStateException(s"FIXME: unexpected expr child node $n")
-      }
-      .mkString("")
+  private def exprToText(contents: List[ExprElement], extra: List[Token] = Nil): String = {
+    val contentsTokens = contents.flatMap {
+      case GeneralTokens(toks) => toks
+      case n: Any              => throw new IllegalStateException(s"FIXME: unexpected expr child node $n")
+    }
+    (contentsTokens ++ extra).iterator.map(_.text).mkString("")
   }
 
   /**
