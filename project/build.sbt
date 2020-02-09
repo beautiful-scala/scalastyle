@@ -1,4 +1,4 @@
 val scalastyleVersion = settingKey[String]("Scalastyle version")
-scalastyleVersion := IO.read(new File("project/scalastyle-version"))
+scalastyleVersion := sys.props.getOrElse("scalastyle.version", "1.1.1")
 
 libraryDependencies += "com.beautiful-scala" %% "scalastyle" % scalastyleVersion.value

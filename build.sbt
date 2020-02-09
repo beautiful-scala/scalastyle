@@ -117,14 +117,5 @@ val createRulesMarkdownDyn = Def.taskDyn {
 }
 createRulesMarkdown := createRulesMarkdownDyn.value
 
-// set scalastyle version
-val setScalastyleVersion = taskKey[Unit]("Set scalastyle version for testing")
-setScalastyleVersion := {
-  val v = version.value
-  val f = new File("project/scalastyle-version")
-  streams.value.log.info(s"Writing $v to ${f.getAbsolutePath}")
-  IO.write(f, v)
-}
-
 // plugins
 addCompilerPlugin(scalafixSemanticdb)
