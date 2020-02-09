@@ -1,4 +1,5 @@
 import sbt._
+import sbt.Keys.streams
 
 enablePlugins(BuildInfoPlugin)
 
@@ -119,7 +120,10 @@ createRulesMarkdown := createRulesMarkdownDyn.value
 // set scalastyle version
 val setScalastyleVersion = taskKey[Unit]("Set scalastyle version for testing")
 setScalastyleVersion := {
-  IO.write(new File("project/scalastyle-version"), version.value)
+  val v = version.value
+  val f = new File("project/scalastyle-version")
+  streams.value.log.info(s"Writing $v to ${f.getAbsolutePath}")
+  IO.write(f, v)
 }
 
 // plugins

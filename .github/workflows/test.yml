@@ -28,4 +28,4 @@ jobs:
             sbt-
       - run: sbt +test
       - run: |
-          sbt ++2.12.10 setScalastyleVersion publishLocal reload scalastyle
+          sbt '++2.12.10; setScalastyleVersion; publishLocal; reload plugins; scalastyleVersion; show update; reload return; scalastyle'
