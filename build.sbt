@@ -59,7 +59,7 @@ cancelable in Global := true
 
 // Lib dependencies
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.3",
+  "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.4",
   "org.scalariform"        %% "scalariform"             % "0.2.10",
   "com.typesafe"           % "config"                   % "1.4.0",
   "junit"                  % "junit"                    % "4.13" % "test",
