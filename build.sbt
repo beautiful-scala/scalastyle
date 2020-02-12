@@ -66,7 +66,8 @@ libraryDependencies ++= Seq(
   "com.novocode"           % "junit-interface"          % "0.11" % "test",
   "com.google.guava"       % "guava"                    % "23.0" % "test",
   "org.scalatest"          %% "scalatest"               % "3.1.0" % "test",
-  "org.scalatestplus"      %% "junit-4-12"              % "3.1.0.0" % "test"
+  "org.scalatestplus"      %% "junit-4-12"              % "3.1.0.0" % "test",
+  "org.scalameta"          %% "munit"                   % "0.4.5" % "test"
 )
 
 // Test
@@ -78,7 +79,11 @@ logBuffered in Test := false
 // D - show all durations,
 // T - show reminder of failed and cancelled tests with short stack traces,
 // F - show full stack traces.
-testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oTFNCO")
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oDTF")
+testFrameworks := List(
+  new TestFramework("munit.Framework"),
+  new TestFramework("com.geirsson.junit.PantsFramework")
+)
 
 // scalafix & scalafmt
 scalafixDependencies in ThisBuild ++= Seq(
