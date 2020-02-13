@@ -118,7 +118,15 @@ package foobar
 package FooBar
 """
 
-    assertErrors(List(columnError(2, 8, List("^[a-z][A-Za-z]*$"))), source)
+    assertErrors(List(columnError(2, 8, List("^[a-z]+$"))), source)
+  }
+
+  @Test def testSinglePartCamelCaseError(): Unit = {
+    val source = """
+package fooBar
+"""
+
+    assertErrors(List(columnError(2, 8, List("^[a-z]+$"))), source)
   }
 
   @Test def testMultiPartNoError(): Unit = {
@@ -134,7 +142,15 @@ package abc.foobar
 package abc.foo_bar
 """
 
-    assertErrors(List(columnError(2, 12, List("^[a-z][A-Za-z]*$"))), source)
+    assertErrors(List(columnError(2, 12, List("^[a-z]+$"))), source)
+  }
+
+  @Test def testMultiPartCamelCaseError(): Unit = {
+    val source = """
+package abc.fooBar
+"""
+
+    assertErrors(List(columnError(2, 12, List("^[a-z]+$"))), source)
   }
 
   @Test def testPackageObjectNoError(): Unit = {
@@ -162,7 +178,7 @@ package foo
 package Bar
 """
 
-    assertErrors(List(columnError(3, 8, List("^[a-z][A-Za-z]*$"))), source)
+    assertErrors(List(columnError(3, 8, List("^[a-z]+$"))), source)
   }
 
   @Test def testMultiLinePackageMultipleError(): Unit = {
@@ -172,7 +188,7 @@ package Bar
 """
 
     assertErrors(
-      List(columnError(2, 8, List("^[a-z][A-Za-z]*$")), columnError(3, 8, List("^[a-z][A-Za-z]*$"))),
+      List(columnError(2, 8, List("^[a-z]+$")), columnError(3, 8, List("^[a-z]+$"))),
       source
     )
   }
