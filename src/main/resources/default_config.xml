@@ -304,4 +304,5 @@
       </parameter>
     </parameters>
   </check>
+  <check class="org.scalastyle.scalariform.CurliesImportChecker" level="warning" enabled="false"></check>
 </scalastyle>
