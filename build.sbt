@@ -82,7 +82,7 @@ logBuffered in Test := false
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oDTF")
 testFrameworks := List(
   new TestFramework("munit.Framework"),
-  new TestFramework("com.geirsson.junit.PantsFramework")
+  new TestFramework("munit.internal.junitinterface.PantsFramework")
 )
 
 // scalafix & scalafmt
