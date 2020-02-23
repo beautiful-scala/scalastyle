@@ -1,7 +1,7 @@
 pull_request_rules:
-  - name: Automatic merge on approval
+  - name: Label scala-steward's PRs
     conditions:
-      - "#approved-reviews-by>=1"
+      - author=scala-steward
     actions:
-      merge:
-        method: merge
+      label:
+        add: [dependencies]
