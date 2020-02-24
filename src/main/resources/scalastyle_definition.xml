@@ -1,220 +1,220 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--  scalastyle definition file. This contains the list of checkers and the parameters & types available -->
 <scalastyle-definition>
-    <checker class="org.scalastyle.file.FileTabChecker" id="line.contains.tab" defaultLevel="warning"/>
-    <checker class="org.scalastyle.file.FileLengthChecker" id="file.size.limit" defaultLevel="warning">
-        <parameters>
-            <parameter name="maxFileLength" type="integer" default="1500"/>
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.file.HeaderMatchesChecker" id="header.matches" defaultLevel="warning">
-        <parameters>
-            <parameter name="header" type="string" multiple="true" default=""/>
-            <parameter name="regex" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.SpacesAfterPlusChecker" id="spaces.after.plus" defaultLevel="warning" />
-    <checker class="org.scalastyle.file.WhitespaceEndOfLineChecker" id="whitespace.end.of.line" defaultLevel="warning">
-        <parameters>
-            <parameter name="ignoreWhitespaceLines" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.SpacesBeforePlusChecker" id="spaces.before.plus" defaultLevel="warning" />
-    <checker class="org.scalastyle.file.FileLineLengthChecker" id="line.size.limit" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maxLineLength" type="integer" default="160" />
-            <parameter name="tabSize" type="integer" default="4" />
-            <parameter name="ignoreImports" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.ClassNamesChecker" id="class.name" defaultLevel="warning">
-        <parameters>
-            <parameter name="regex" type="string" default="^[A-Z][A-Za-z]*$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.ObjectNamesChecker" id="object.name" defaultLevel="warning">
-        <parameters>
-            <parameter name="regex" type="string" default="^[A-Z][A-Za-z]*$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.PackageNamesChecker" id="package.name" defaultLevel="warning">
-        <parameters>
-            <parameter name="regex" type="string" default="^[a-z]+$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.PackageObjectNamesChecker" id="package.object.name" defaultLevel="warning">
-        <parameters>
-            <parameter name="regex" type="string" default="^[a-z][A-Za-z]*$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.EqualsHashCodeChecker" id="equals.hash.code"  defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.IllegalImportsChecker" id="illegal.imports" defaultLevel="warning" >
-        <parameters>
-            <parameter name="illegalImports" type="string" default="sun._,java.awt._" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.ParameterNumberChecker" id="parameter.number" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maxParameters" type="integer" default="8" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.MagicNumberChecker" id="magic.number" defaultLevel="warning" >
-        <parameters>
-            <parameter name="ignore" type="string" default="-1,0,1,2" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" id="no.whitespace.before.left.bracket" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" id="no.whitespace.after.left.bracket" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.NoWhitespaceBeforeRightBracketChecker" id="no.whitespace.before.right.bracket" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.ReturnChecker" id="return" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.NullChecker" id="null" defaultLevel="warning">
-        <parameters>
-            <parameter name="allowNullChecks" type="boolean" default="true" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.NoCloneChecker" id="no.clone" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.NoFinalizeChecker" id="no.finalize" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.CovariantEqualsChecker" id="covariant.equals" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.StructuralTypeChecker" id="structural.type" defaultLevel="warning" />
-    <checker class="org.scalastyle.file.RegexChecker" id="regex" defaultLevel="warning" >
-        <parameters>
-            <parameter name="regex" type="string" default="" />
-            <parameter name="line" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.NumberOfTypesChecker" id="number.of.types" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maxTypes" type="integer" default="20" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.CyclomaticComplexityChecker" id="cyclomatic.complexity" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maximum" type="integer" default="10" />
-            <parameter name="countCases" type="boolean" default="true" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.UppercaseLChecker" id="uppercase.l" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" id="simplify.boolean.expression" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.IfBraceChecker" id="if.brace" defaultLevel="warning" >
-        <parameters>
-            <parameter name="singleLineAllowed" type="boolean" default="true" />
-            <parameter name="doubleLineAllowed" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.MethodLengthChecker" id="method.length" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maxLength" type="integer" default="50" />
-            <parameter name="ignoreComments" type="boolean" default="false" />
-            <parameter name="ignoreEmpty" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.MethodNamesChecker" id="method.name" defaultLevel="warning" >
-        <parameters>
-            <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*(_=)?$" />
-            <parameter name="ignoreRegex" type="string" default="^$" />
-            <parameter name="ignoreOverride" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.MethodArgumentNamesChecker" id="method.argument.name" defaultLevel="warning" >
-        <parameters>
-            <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*$" />
-            <parameter name="ignoreRegex" type="string" default="^$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.NumberOfMethodsInTypeChecker" id="number.of.methods" defaultLevel="warning" >
-        <parameters>
-            <parameter name="maxMethods" type="integer" default="30" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" id="public.methods.have.type" defaultLevel="warning" >
-        <parameters>
-            <parameter name="ignoreOverride" type="boolean" default="false" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.file.NewLineAtEofChecker" id="newline.at.eof" defaultLevel="warning"/>
-    <checker class="org.scalastyle.file.NoNewLineAtEofChecker" id="no.newline.at.eof" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.WhileChecker" id="while" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.VarFieldChecker" id="var.field" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.VarLocalChecker" id="var.local" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.RedundantIfChecker" id="if.redundant" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.TokenChecker" id="token" defaultLevel="warning" >
-        <parameters>
-            <parameter name="regex" type="string" default="^$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.DeprecatedJavaChecker" id="deprecated.java" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.OverrideJavaChecker" id="override.java" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.EmptyClassChecker" id="empty.class" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.ClassTypeParameterChecker" id="class.type.parameter.name" defaultLevel="warning" >
-        <parameters>
-            <parameter name="regex" type="string" default="^[A-Z_]$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.UnderscoreImportChecker" id="underscore.import" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.LowercasePatternMatchChecker" id="lowercase.pattern.match" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.MultipleStringLiteralsChecker" id="multiple.string.literals" defaultLevel="warning" >
-        <parameters>
-            <parameter name="allowed" type="integer" default="1" />
-            <parameter name="ignoreRegex" type="string" default="^&quot;&quot;$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.ImportGroupingChecker" id="import.grouping" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.NotImplementedErrorUsage" id="not.implemented.error.usage" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.BlockImportChecker" id="block.import" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.CurliesImportChecker" id="curlies.import" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.ProcedureDeclarationChecker" id="procedure.declaration" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.ForBraceChecker" id="for.brace" defaultLevel="warning">
-        <parameters>
-            <parameter name="singleLineAllowed" type="boolean" default="false"/>
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.ForLoopChecker" id="for.loop" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.SpaceAfterCommentStartChecker" id="space.after.comment.start" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.ScalaDocChecker" id="scaladoc" defaultLevel="warning">
-        <parameters>
-            <parameter name="ignoreRegex" type="string" default="^$"/>
-            <parameter name="ignoreTokenTypes" type="string" default="^$"/>
-            <parameter name="ignoreOverride" type="boolean" default="false"/>
-            <parameter name="indentStyle" type="string" default="anydoc"/>
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.DisallowSpaceAfterTokenChecker" id="disallow.space.after.token" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" id="disallow.space.before.token" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" id="ensure.single.space.after.token" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" id="ensure.single.space.before.token" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.NonASCIICharacterChecker" id="non.ascii.character.disallowed" defaultLevel="warning">
-        <parameters>
-            <parameter name="allowStringLiterals" type="boolean" default="false"/>
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.file.IndentationChecker" id="indentation" defaultLevel="warning">
-        <parameters>
-            <parameter name="tabSize" type="integer" default="2" />
-            <parameter name="methodParamIndentSize" type="integer" default="2" />
-            <parameter name="classParamIndentSize" type="integer" default="4" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.FieldNamesChecker" id="field.name" defaultLevel="warning">
-        <parameters>
-            <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*$" />
-            <parameter name="objectFieldRegex" type="string" default="^[A-Z][A-Za-z0-9]*$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.XmlLiteralChecker" id="xml.literal" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.ImportOrderChecker" id="import.ordering" defaultLevel="warning" />
-    <checker class="org.scalastyle.scalariform.PatternMatchAlignChecker" id="pattern.match.align" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.TodoCommentChecker" id="todo.comment" defaultLevel="warning">
-        <parameters>
-            <parameter name="words" type="string" default="TODO|FIXME" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.EmptyInterpolatedStringChecker" id="empty.interpolated.strings" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.NamedArgumentChecker" id="named.argument" defaultLevel="warning">
-        <parameters>
-            <parameter name="checkString" type="boolean" default="false" />
-            <parameter name="ignoreMethod" type="string" default="^set.+$" />
-        </parameters>
-    </checker>
-    <checker class="org.scalastyle.scalariform.WhileBraceChecker" id="while.brace" defaultLevel="warning"/>
-    <checker class="org.scalastyle.scalariform.CaseBraceChecker" id="disallow.case.brace" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.FileTabChecker" id="line.contains.tab" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.FileLengthChecker" id="file.size.limit" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxFileLength" type="integer" default="1500"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.file.HeaderMatchesChecker" id="header.matches" defaultLevel="warning">
+    <parameters>
+      <parameter name="header" type="string" multiple="true" default=""/>
+      <parameter name="regex" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.SpacesAfterPlusChecker" id="spaces.after.plus" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.WhitespaceEndOfLineChecker" id="whitespace.end.of.line" defaultLevel="warning">
+    <parameters>
+      <parameter name="ignoreWhitespaceLines" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.SpacesBeforePlusChecker" id="spaces.before.plus" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.FileLineLengthChecker" id="line.size.limit" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxLineLength" type="integer" default="160"/>
+      <parameter name="tabSize" type="integer" default="4"/>
+      <parameter name="ignoreImports" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.ClassNamesChecker" id="class.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[A-Z][A-Za-z]*$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.ObjectNamesChecker" id="object.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[A-Z][A-Za-z]*$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.PackageNamesChecker" id="package.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[a-z]+$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.PackageObjectNamesChecker" id="package.object.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[a-z][A-Za-z]*$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.EqualsHashCodeChecker" id="equals.hash.code" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.IllegalImportsChecker" id="illegal.imports" defaultLevel="warning">
+    <parameters>
+      <parameter name="illegalImports" type="string" default="sun._,java.awt._"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.ParameterNumberChecker" id="parameter.number" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxParameters" type="integer" default="8"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.MagicNumberChecker" id="magic.number" defaultLevel="warning">
+    <parameters>
+      <parameter name="ignore" type="string" default="-1,0,1,2"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" id="no.whitespace.before.left.bracket" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" id="no.whitespace.after.left.bracket" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NoWhitespaceBeforeRightBracketChecker" id="no.whitespace.before.right.bracket" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ReturnChecker" id="return" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NullChecker" id="null" defaultLevel="warning">
+    <parameters>
+      <parameter name="allowNullChecks" type="boolean" default="true"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.NoCloneChecker" id="no.clone" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NoFinalizeChecker" id="no.finalize" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.CovariantEqualsChecker" id="covariant.equals" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.StructuralTypeChecker" id="structural.type" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.RegexChecker" id="regex" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default=""/>
+      <parameter name="line" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.NumberOfTypesChecker" id="number.of.types" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxTypes" type="integer" default="20"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.CyclomaticComplexityChecker" id="cyclomatic.complexity" defaultLevel="warning">
+    <parameters>
+      <parameter name="maximum" type="integer" default="10"/>
+      <parameter name="countCases" type="boolean" default="true"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.UppercaseLChecker" id="uppercase.l" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" id="simplify.boolean.expression" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.IfBraceChecker" id="if.brace" defaultLevel="warning">
+    <parameters>
+      <parameter name="singleLineAllowed" type="boolean" default="true"/>
+      <parameter name="doubleLineAllowed" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.MethodLengthChecker" id="method.length" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxLength" type="integer" default="50"/>
+      <parameter name="ignoreComments" type="boolean" default="false"/>
+      <parameter name="ignoreEmpty" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.MethodNamesChecker" id="method.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*(_=)?$"/>
+      <parameter name="ignoreRegex" type="string" default="^$"/>
+      <parameter name="ignoreOverride" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.MethodArgumentNamesChecker" id="method.argument.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*$"/>
+      <parameter name="ignoreRegex" type="string" default="^$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.NumberOfMethodsInTypeChecker" id="number.of.methods" defaultLevel="warning">
+    <parameters>
+      <parameter name="maxMethods" type="integer" default="30"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.PublicMethodsHaveTypeChecker" id="public.methods.have.type" defaultLevel="warning">
+    <parameters>
+      <parameter name="ignoreOverride" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.file.NewLineAtEofChecker" id="newline.at.eof" defaultLevel="warning"/>
+  <checker class="org.scalastyle.file.NoNewLineAtEofChecker" id="no.newline.at.eof" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.WhileChecker" id="while" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.VarFieldChecker" id="var.field" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.VarLocalChecker" id="var.local" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.RedundantIfChecker" id="if.redundant" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.TokenChecker" id="token" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.DeprecatedJavaChecker" id="deprecated.java" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.OverrideJavaChecker" id="override.java" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.EmptyClassChecker" id="empty.class" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ClassTypeParameterChecker" id="class.type.parameter.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[A-Z_]$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.UnderscoreImportChecker" id="underscore.import" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.LowercasePatternMatchChecker" id="lowercase.pattern.match" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.MultipleStringLiteralsChecker" id="multiple.string.literals" defaultLevel="warning">
+    <parameters>
+      <parameter name="allowed" type="integer" default="1"/>
+      <parameter name="ignoreRegex" type="string" default="^&quot;&quot;$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.ImportGroupingChecker" id="import.grouping" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NotImplementedErrorUsage" id="not.implemented.error.usage" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.BlockImportChecker" id="block.import" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.CurliesImportChecker" id="curlies.import" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ProcedureDeclarationChecker" id="procedure.declaration" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ForBraceChecker" id="for.brace" defaultLevel="warning">
+    <parameters>
+      <parameter name="singleLineAllowed" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.ForLoopChecker" id="for.loop" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.SpaceAfterCommentStartChecker" id="space.after.comment.start" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ScalaDocChecker" id="scaladoc" defaultLevel="warning">
+    <parameters>
+      <parameter name="ignoreRegex" type="string" default="^$"/>
+      <parameter name="ignoreTokenTypes" type="string" default="^$"/>
+      <parameter name="ignoreOverride" type="boolean" default="false"/>
+      <parameter name="indentStyle" type="string" default="anydoc"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.DisallowSpaceAfterTokenChecker" id="disallow.space.after.token" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" id="disallow.space.before.token" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" id="ensure.single.space.after.token" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" id="ensure.single.space.before.token" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NonASCIICharacterChecker" id="non.ascii.character.disallowed" defaultLevel="warning">
+    <parameters>
+      <parameter name="allowStringLiterals" type="boolean" default="false"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.file.IndentationChecker" id="indentation" defaultLevel="warning">
+    <parameters>
+      <parameter name="tabSize" type="integer" default="2"/>
+      <parameter name="methodParamIndentSize" type="integer" default="2"/>
+      <parameter name="classParamIndentSize" type="integer" default="4"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.FieldNamesChecker" id="field.name" defaultLevel="warning">
+    <parameters>
+      <parameter name="regex" type="string" default="^[a-z][A-Za-z0-9]*$"/>
+      <parameter name="objectFieldRegex" type="string" default="^[A-Z][A-Za-z0-9]*$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.XmlLiteralChecker" id="xml.literal" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.ImportOrderChecker" id="import.ordering" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.PatternMatchAlignChecker" id="pattern.match.align" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.TodoCommentChecker" id="todo.comment" defaultLevel="warning">
+    <parameters>
+      <parameter name="words" type="string" default="TODO|FIXME"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.EmptyInterpolatedStringChecker" id="empty.interpolated.strings" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.NamedArgumentChecker" id="named.argument" defaultLevel="warning">
+    <parameters>
+      <parameter name="checkString" type="boolean" default="false"/>
+      <parameter name="ignoreMethod" type="string" default="^set.+$"/>
+    </parameters>
+  </checker>
+  <checker class="org.scalastyle.scalariform.WhileBraceChecker" id="while.brace" defaultLevel="warning"/>
+  <checker class="org.scalastyle.scalariform.CaseBraceChecker" id="disallow.case.brace" defaultLevel="warning"/>
 </scalastyle-definition>
