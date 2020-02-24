@@ -86,7 +86,7 @@ object CreateRulesMarkdown {
     val desc = config.getString(c.id + ".description").replaceAll("''\\[''", "'\\\\['")
 
     val header = List(
-      s"""<a name="${id(c.className)}" />""",
+      s"""<a name="${id(c.className)}"></a>""",
       "",
       s"""### ${c.className} - ${desc}""",
       "",
@@ -116,16 +116,11 @@ object CreateRulesMarkdown {
       List(x.toString)
     }
 
-    val s = doc.example.map { x =>
-      new PrettyPrinter(1000, 1).format(toXml(docFile + ":" + c.id, x))
-    }
-    val x = s.map(t => <pre>{t}</pre>).map(x => new XmlPrettyPrinter(1000, 1).format(x))
+    val x = doc.example.map(x => new PrettyPrinter(1000, 1).format(toXml(docFile + ":" + c.id, x)))
 
-    val x2 = if (x.isEmpty) {
-      "TBD"
-    } else {
-      x.mkString("\nor\n")
-    }
+    val x2 =
+      if (x.isEmpty) "TBD"
+      else x.map(x => s"```xml\n$x\n```").mkString("\nor\n")
 
     val example = List("", "### Example configuration", x2)
 
