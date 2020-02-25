@@ -11,7 +11,7 @@
       ]]>
     </example-configuration>
   </check>
-  <check> id="line.size.limit">
+  <check id="line.size.limit">
     <justification>Lines that are too long can be hard to read and horizontal scrolling is annoying.</justification>
     <example-configuration>
       <![CDATA[
@@ -25,7 +25,7 @@
       ]]>
     </example-configuration>
   </check>
-  <check> id="magic.number">
+  <check id="magic.number">
     <justification>Replacing a magic number with a named constant can make code easier to read and understand, and can avoid some subtle bugs.</justification>
     <extra-description>A simple assignment to a val is not considered to be a magic number, for example: `val foo = 4` is not a magic number, but `var foo = 4` is considered to be a magic number.</extra-description>
     <example-configuration>
@@ -38,7 +38,7 @@
       ]]>
     </example-configuration>
   </check>
-  <check> id="regex">
+  <check id="regex">
     <justification>Some checks can be carried out with a regular expression.</justification>
     <example-configuration>
       <![CDATA[
@@ -52,7 +52,7 @@
       ]]>
     </example-configuration>
   </check>
-  <check> id="number.of.types">
+  <check id="number.of.types">
     <justification>If there are too many classes/objects defined in a single file, this can cause the code to be difficult to understand.</justification>
     <example-configuration>
       <![CDATA[
@@ -338,7 +338,7 @@ val lc = "lc"
       ]]>
     </example-configuration>
   </check>
-  <check> id="not.implemented.error.usage">
+  <check id="not.implemented.error.usage">
     <justification>The `???` operator denotes that an implementation is missing. This rule helps to avoid potential runtime errors because of not implemented code.</justification>
     <example-configuration>
       <![CDATA[
@@ -346,7 +346,7 @@ val lc = "lc"
       ]]>
     </example-configuration>
   </check>
-  <check> id="block.import">
+  <check id="block.import">
     <justification>Block imports, e.g. `import a.{b, c}` can lead to annoying merge errors in large code bases that are maintained by lot of developers. This rule allows to ensure that only single imports are used in order to minimize merge errors in import declarations.</justification>
     <example-configuration>
       <![CDATA[
@@ -354,7 +354,7 @@ val lc = "lc"
       ]]>
     </example-configuration>
   </check>
-  <check> id="curlies.import">
+  <check id="curlies.import">
     <justification>Curlies imports, e.g. `import a.{b, c}`, can lead to annoying merge errors in large code bases that are maintained by lot of developers. This rule allows to ensure that only single imports, no renaming and no hiding imports are used in order to minimize merge errors in import declarations.</justification>
     <example-configuration>
       <![CDATA[
@@ -420,7 +420,7 @@ for (i &lt;- List(1,2,3)) yield i
       ]]>
     </example-configuration>
   </check>
-  <check> id="for.loop">
+  <check id="for.loop">
     <justification>
 For-comprehensions which lack a `yield` clause is actually a loop rather than a functional comprehension and it is usually more readable to string the generators together between parentheses rather than using the syntactically-confusing `} {` construct:
 
@@ -447,7 +447,7 @@ for {
       ]]>
     </example-configuration>
   </check>
-  <check> id="space.after.comment.start">
+  <check id="space.after.comment.start">
     <justification>
 To bring consistency with how comments should be formatted, leave a space right after the beginning of the comment.
 
@@ -475,7 +475,7 @@ object Foobar {
       ]]>
     </example-configuration>
   </check>
-  <check> id="non.ascii.character.disallowed">
+  <check id="non.ascii.character.disallowed">
     <justification>
 Scala allows unicode characters as operators and some editors misbehave when they see non-ascii character. In a project collaborated by a community of developers. This check can be helpful in such situations. 
 
@@ -852,7 +852,7 @@ To fix it, replace the (unicode operator) `⇒` with `=>`.
       ]]>
     </example-configuration>
   </check>
-  <check> id="pattern.match.align">
+  <check id="pattern.match.align">
     <justification>Correct formatting can help readability.</justification>
     <example-configuration>
       <![CDATA[
@@ -860,7 +860,7 @@ To fix it, replace the (unicode operator) `⇒` with `=>`.
       ]]>
     </example-configuration>
   </check>
-  <check> id="empty.interpolated.strings">
+  <check id="empty.interpolated.strings">
     <justification>Empty interpolated strings are harder to read and not necessary.</justification>
     <example-configuration>
       <![CDATA[
