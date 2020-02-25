@@ -46,9 +46,7 @@ trait Output[T <: FileSpec] {
   def output(messages: java.util.List[Message[T]]): OutputResult = privateOutput(messages.asScala)
 
   private[this] def privateOutput(messages: Iterable[Message[T]]): OutputResult = {
-    messages.foreach { m =>
-      eachMessage(m); message(m)
-    }
+    messages.foreach { m => eachMessage(m); message(m) }
     OutputResult(files, errors, warnings, infos)
   }
 
@@ -132,9 +130,7 @@ object XmlOutput {
     val decl = """<?xml version="1.0" encoding="""" + encoding + """"?>"""
     val s = new XmlPrettyPrinter(width, step).format(toCheckstyleFormat(messageHelper, messages))
     // scalastyle:off regex
-    printToFile(target, encoding) { pw =>
-      pw.println(decl); pw.println(s)
-    }
+    printToFile(target, encoding) { pw => pw.println(decl); pw.println(s) }
     // scalastyle:on regex
   }
 

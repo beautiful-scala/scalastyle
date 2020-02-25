@@ -347,9 +347,7 @@ class ImportOrderChecker extends ScalariformChecker {
   private def countNewLines(start: Int, end: Int): Int = {
     var count = 0
     ast.tokens
-      .filter { t =>
-        t.offset >= start && t.offset < end
-      }
+      .filter(t => t.offset >= start && t.offset < end)
       .foreach { t =>
         val commentsToken = t.associatedWhitespaceAndComments
         if (commentsToken != null) { // scalastyle:ignore null

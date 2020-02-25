@@ -30,7 +30,6 @@ import com.typesafe.config.ConfigFactory
 import org.scalastyle.BuildInfo
 import org.scalastyle.DefinitionChecker
 import org.scalastyle.ScalastyleDefinition
-import org.scalastyle.XmlPrettyPrinter
 
 // scalastyle:off magic.number
 

@@ -208,24 +208,16 @@ object ScalastyleDefinition {
   }
 
   def stringAttr(node: Node, id: String): String =
-    attr(node, id, "", { s =>
-      s
-    })
+    attr(node, id, "", s => s)
 
   def levelAttr(node: Node, id: String): Level =
-    attr(node, id, Level.Warning, { s =>
-      Level(s)
-    })
+    attr(node, id, Level.Warning, s => Level(s))
 
   def typeAttr(node: Node, id: String): ParameterType =
-    attr(node, id, "string", { s =>
-      ParameterType(s)
-    })
+    attr(node, id, "string", s => ParameterType(s))
 
   def booleanAttr(node: Node, id: String): Boolean =
-    attr(node, id, "false", { s =>
-      "true" == s.toLowerCase()
-    })
+    attr(node, id, "false", s => "true" == s.toLowerCase())
 
   def attr[T](node: Node, id: String, defaultValue: String, fn: (String) => T): T = {
     node.attribute(id) match {
