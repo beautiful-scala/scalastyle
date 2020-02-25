@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--  scalastyle definition file. This contains the list of checkers and the parameters & types available -->
 <scalastyle-definition>
   <checker class="org.scalastyle.file.FileTabChecker" id="line.contains.tab" defaultLevel="warning"/>
