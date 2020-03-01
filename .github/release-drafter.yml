@@ -9,8 +9,9 @@ categories:
       - "fix"
       - "bugfix"
       - "bug"
+  - title: "⚙️ Config"
+    label: "config"
   - title: "🧰 Maintenance"
     label: "chore"
   - title: "🔧 Dependency updates"
-    labels:
-      - "dependencies"
+    label: "dependencies"
