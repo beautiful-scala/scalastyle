@@ -115,8 +115,8 @@ object Checker {
 class CheckerUtils(classLoader: Option[ClassLoader] = None) {
   private def comments(tokens: List[Token]): List[Comment] =
     tokens.flatMap { t =>
-      if (t.associatedWhitespaceAndComments == null) Nil
-      else t.associatedWhitespaceAndComments.comments // scalastyle:ignore null
+      if (t.associatedWhitespaceAndComments == null) Nil // scalastyle:ignore null
+      else t.associatedWhitespaceAndComments.comments
     }
 
   def parseScalariform(source: String): ScalariformAst = {
