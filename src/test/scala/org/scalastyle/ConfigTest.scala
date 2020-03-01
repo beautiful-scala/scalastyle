@@ -21,12 +21,10 @@ import org.junit.Test
 import org.scalatestplus.junit.AssertionsForJUnit
 
 class ConfigTest extends AssertionsForJUnit {
-
   @Test
   def testHeaderOutputMsg(): Unit = {
     val messageHelper = new MessageHelper(ConfigFactory.load())
     val msg = Output.findMessage(messageHelper, "header.matches", List(), None)
-    assert(msg.equals("Header does not match expected text"))
+    assert(msg.equals("Header does not match expected text."))
   }
-
 }

@@ -215,7 +215,7 @@ if (bool_expression) expression1 else expression2
     </example-configuration>
   </check>
   <check id="var.local">
-    <justification>`var` (mutable local variables) are deprecated if you're using a strict functional style</justification>
+    <justification>`var` (mutable local variables) are deprecated if you're using a strict functional style.</justification>
     <example-configuration>
       <![CDATA[
         <check level="warning" class="org.scalastyle.scalariform.VarLocalChecker" enabled="true"/>
