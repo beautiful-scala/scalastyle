@@ -27,5 +27,5 @@ jobs:
       - run: sbt +test
       - name: Run scalastyle using a snapshot version
         run: |
-          sbt 'set version := "99-SNAPSHOT"; ++2.12.10; publishLocal'
+          sbt 'set version := "99-SNAPSHOT"; ++2.12.11; publishLocal'
           sbt -Dscalastyle.version=99-SNAPSHOT scalastyle
