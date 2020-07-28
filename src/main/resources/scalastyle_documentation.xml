@@ -206,6 +206,14 @@ if (bool_expression) expression1 else expression2
       ]]>
     </example-configuration>
   </check>
+  <check id="throw">
+    <justification>`throw` statements should be replaced with type-safe error constructs like `Try` and `Either`, which communicate the possibility of error in the type signature.</justification>
+    <example-configuration>
+      <![CDATA[
+        <check level="warning" class="org.scalastyle.scalariform.ThrowChecker" enabled="true"/>
+      ]]>
+    </example-configuration>
+  </check>
   <check id="var.field">
     <justification>`var` (mutable fields) are deprecated if you're using a strict functional style.</justification>
     <example-configuration>

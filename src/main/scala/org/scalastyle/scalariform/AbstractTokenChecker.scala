@@ -22,6 +22,7 @@ import _root_.scalariform.lexer.Tokens.INTEGER_LITERAL
 import _root_.scalariform.lexer.Tokens.RETURN
 import _root_.scalariform.lexer.Tokens.VARID
 import _root_.scalariform.lexer.Tokens.WHILE
+import _root_.scalariform.lexer.Tokens.THROW
 import _root_.scalariform.parser.CompilationUnit
 import org.scalastyle.PositionError
 import org.scalastyle.ScalariformChecker
@@ -32,9 +33,7 @@ abstract class AbstractTokenChecker(val errorKey: String, tokenType: TokenType) 
     val it = for {
       t <- ast.tokens
       if t.tokenType == tokenType && matches(t)
-    } yield {
-      PositionError(t.offset)
-    }
+    } yield PositionError(t.offset)
 
     it
   }
@@ -48,6 +47,7 @@ class UppercaseLChecker extends AbstractTokenChecker("uppercase.l", INTEGER_LITE
 
 class WhileChecker extends AbstractTokenChecker("while", WHILE)
 class ReturnChecker extends AbstractTokenChecker("return", RETURN)
+class ThrowChecker extends AbstractTokenChecker("throw", THROW)
 
 class TokenChecker extends AbstractTokenChecker("token", VARID) {
   private val DefaultRegex = "^$"
