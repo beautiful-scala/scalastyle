@@ -47,11 +47,11 @@ class SpaceAfterCommentStartChecker extends ScalariformChecker {
 
   private def multiLineCommentRegex(comment: Token) =
     Pattern.compile("""/\*\S+.*""", Pattern.DOTALL).matcher(comment.text.trim).matches() ||
-    Pattern.compile("""/\*.*\S\*/""", Pattern.DOTALL).matcher(comment.text.trim).matches()
+      Pattern.compile("""/\*.*\S\*/""", Pattern.DOTALL).matcher(comment.text.trim).matches()
 
   private def scalaDocPatternRegex(comment: Token) =
     Pattern.compile("""/\*\*\S+.*""", Pattern.DOTALL).matcher(comment.text.trim).matches() ||
-    Pattern.compile("""/\*\*.*\S\*/""", Pattern.DOTALL).matcher(comment.text.trim).matches()
+      Pattern.compile("""/\*\*.*\S\*/""", Pattern.DOTALL).matcher(comment.text.trim).matches()
 
   private def singleLineCommentRegex(comment: String): Boolean =
     comment.matches("""//\S+.*""") && !comment.matches("""///+""")

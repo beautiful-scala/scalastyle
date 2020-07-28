@@ -39,9 +39,7 @@ class RedundantIfChecker extends CombinedChecker {
     val it = for {
       t <- localvisit(ast.compilationUnit)
       if matches(t)
-    } yield {
-      PositionError(t.firstToken.offset)
-    }
+    } yield PositionError(t.firstToken.offset)
 
     it
   }
@@ -49,22 +47,25 @@ class RedundantIfChecker extends CombinedChecker {
   private def matches(t: IfExpr): Boolean =
     isBoolean(t.body) && isBoolean(t.elseClause)
 
-  private def isBoolean(t: Option[ElseClause]): Boolean = t match {
-    case Some(ElseClause(None, tok, expr)) => tok.tokenType == ELSE && isBoolean(expr)
-    case _                                 => false
-  }
-  private def isBoolean(t: Expr): Boolean = t match {
-    case Expr(List(GeneralTokens(List(a)))) => isBoolean(a)
-    case Expr(
-        List(BlockExpr(_, Right(StatSeq(None, Some(Expr(List(GeneralTokens(List(a))))), List())), _))
-        ) =>
-      isBoolean(a)
-    case _ => false
-  }
+  private def isBoolean(t: Option[ElseClause]): Boolean =
+    t match {
+      case Some(ElseClause(None, tok, expr)) => tok.tokenType == ELSE && isBoolean(expr)
+      case _                                 => false
+    }
+  private def isBoolean(t: Expr): Boolean =
+    t match {
+      case Expr(List(GeneralTokens(List(a)))) => isBoolean(a)
+      case Expr(
+            List(BlockExpr(_, Right(StatSeq(None, Some(Expr(List(GeneralTokens(List(a))))), List())), _))
+          ) =>
+        isBoolean(a)
+      case _ => false
+    }
   private def isBoolean(t: Token): Boolean = Set(TRUE, FALSE).contains(t.tokenType)
 
-  private def localvisit(ast: Any): List[IfExpr] = ast match {
-    case t: IfExpr => List(t) ++ localvisit(t.body) ++ localvisit(t.elseClause.map(_.elseBody))
-    case t: Any    => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[IfExpr] =
+    ast match {
+      case t: IfExpr => List(t) ++ localvisit(t.body) ++ localvisit(t.elseClause.map(_.elseBody))
+      case t: Any    => visit(t, localvisit)
+    }
 }

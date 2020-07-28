@@ -50,19 +50,20 @@ trait Output[T <: FileSpec] {
     OutputResult(files, errors, warnings, infos)
   }
 
-  def eachMessage(m: Message[T]): Unit = m match {
-    case StartWork()     =>
-    case EndWork()       =>
-    case StartFile(file) => files += 1
-    case EndFile(file)   =>
-    case StyleError(file, clazz, key, level, args, line, column, customMessage) =>
-      level match {
-        case WarningLevel => warnings += 1
-        case InfoLevel    => infos += 1
-        case _            => errors += 1
-      }
-    case StyleException(file, clazz, message, stacktrace, line, column) => errors += 1
-  }
+  def eachMessage(m: Message[T]): Unit =
+    m match {
+      case StartWork()     =>
+      case EndWork()       =>
+      case StartFile(file) => files += 1
+      case EndFile(file)   =>
+      case StyleError(file, clazz, key, level, args, line, column, customMessage) =>
+        level match {
+          case WarningLevel => warnings += 1
+          case InfoLevel    => infos += 1
+          case _            => errors += 1
+        }
+      case StyleException(file, clazz, message, stacktrace, line, column) => errors += 1
+    }
 
   def message(m: Message[T]): Unit
 }
@@ -74,29 +75,30 @@ class TextOutput[T <: FileSpec](config: Config, verbose: Boolean = false, quiet:
   private val messageHelper = new MessageHelper(config)
 
   // scalastyle:off regex multiple.string.literals
-  override def message(m: Message[T]): Unit = m match {
-    case StartWork()     => if (verbose) println("Starting scalastyle")
-    case EndWork()       =>
-    case StartFile(file) => if (verbose) println("start file " + file)
-    case EndFile(file)   => if (verbose) println("end file " + file)
-    case StyleError(file, clazz, key, level, args, line, column, customMessage) =>
-      if (!quiet || verbose) {
-        println(
-          messageHelper.text(level.name) + print("file", file.name) +
-          print("message", Output.findMessage(messageHelper, key, args, customMessage)) +
-          print("line", line) + print("column", column)
-        )
-      }
-    case StyleException(file, clazz, message, stacktrace, line, column) =>
-      if (!quiet || verbose) {
-        println(
-          "error" + print("file", file.name) + print("message", message) + print("line", line) + print(
-            "column",
-            column
+  override def message(m: Message[T]): Unit =
+    m match {
+      case StartWork()     => if (verbose) println("Starting scalastyle")
+      case EndWork()       =>
+      case StartFile(file) => if (verbose) println("start file " + file)
+      case EndFile(file)   => if (verbose) println("end file " + file)
+      case StyleError(file, clazz, key, level, args, line, column, customMessage) =>
+        if (!quiet || verbose) {
+          println(
+            messageHelper.text(level.name) + print("file", file.name) +
+                print("message", Output.findMessage(messageHelper, key, args, customMessage)) +
+                print("line", line) + print("column", column)
           )
-        )
-      }
-  }
+        }
+      case StyleException(file, clazz, message, stacktrace, line, column) =>
+        if (!quiet || verbose) {
+          println(
+            "error" + print("file", file.name) + print("message", message) + print("line", line) + print(
+                  "column",
+                  column
+                )
+          )
+        }
+    }
 
   // scalastyle:on regex
 
@@ -137,18 +139,14 @@ object XmlOutput {
   private def printToFile(f: java.io.File, encoding: String)(op: java.io.PrintWriter => Unit): Unit = {
     val parent = f.getParentFile
     // sometimes f.getParentFile returns null - don't know why, but protect anyway
-    if (parent != null && !parent.exists() && !parent.mkdirs()) { // scalastyle:ignore null
+    if (parent != null && !parent.exists() && !parent.mkdirs()) // scalastyle:ignore null
       throw new IllegalStateException("Couldn't create dir: " + parent)
-    }
 
     val p = new java.io.PrintWriter(f, encoding)
-    try {
-      op(p)
-    } catch {
+    try op(p)
+    catch {
       case e: Throwable => throw e
-    } finally {
-      p.close()
-    }
+    } finally p.close()
   }
 
   case class Alert(
@@ -188,15 +186,17 @@ object XmlOutput {
             <file name={filename}>
           {
               alerts.map {
-                case Alert(fn, severity, message, source, line, column) => {
+                case Alert(fn, severity, message, source, line, column) =>
                   val s = source.collect {
                     case x: Class[_] => x.getName
                   }
-                  <error severity={severity} message={message}/> % attr("source", s) % attr("line", line) % attr(
+                  <error severity={severity} message={message}/> % attr("source", s) % attr(
+                    "line",
+                    line
+                  ) % attr(
                     "column",
                     column
                   )
-                }
               }
             }
         </file>
@@ -205,8 +205,9 @@ object XmlOutput {
     </checkstyle>
   }
 
-  private[this] def attr(name: String, value: Option[Any]): xml.MetaData = value match {
-    case Some(x) => xml.Attribute("", name, x.toString, xml.Null)
-    case None    => xml.Null
-  }
+  private[this] def attr(name: String, value: Option[Any]): xml.MetaData =
+    value match {
+      case Some(x) => xml.Attribute("", name, x.toString, xml.Null)
+      case None    => xml.Null
+    }
 }

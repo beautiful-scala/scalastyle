@@ -34,9 +34,7 @@ class FileLineLengthChecker extends FileChecker {
     val errors = for {
       line <- NormalizedLine.normalize(lines, tabSize)
       if line.length > maxLineLength && !(ignoreImports && importPattern.findFirstIn(line.body).isDefined)
-    } yield {
-      line.mkError(List("" + maxLineLength))
-    }
+    } yield line.mkError(List("" + maxLineLength))
 
     errors.toList
   }

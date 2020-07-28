@@ -11,8 +11,8 @@ class ForLoopChecker extends CombinedChecker {
     for {
       t <- VisitorHelper.getAll[ForExpr](ast.compilationUnit.immediateChildren.head)
       if isLoop(t) && !(
-        Tokens.LPAREN == t.lParenOrBrace.tokenType && Tokens.RPAREN == t.rParenOrBrace.tokenType
-      )
+          Tokens.LPAREN == t.lParenOrBrace.tokenType && Tokens.RPAREN == t.rParenOrBrace.tokenType
+        )
     } yield PositionError(t.lParenOrBrace.offset)
   }
 

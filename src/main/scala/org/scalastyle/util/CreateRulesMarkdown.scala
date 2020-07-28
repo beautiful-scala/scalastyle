@@ -58,17 +58,17 @@ object CreateRulesMarkdown {
   private def toList(elem: NodeSeq) = elem.map(_.text.trim)
 
   private def toXml(description: String, s: String): Elem = {
-    try {
-      XML.loadString(s)
-    } catch {
+    try XML.loadString(s)
+    catch {
       case e: Exception => throw new IllegalArgumentException(description + " for " + s, e)
     }
   }
 
-  private def withTitle(os: Option[String], title: String): List[String] = os match {
-    case Some(x) => List("#### " + title, x, "")
-    case _       => Nil
-  }
+  private def withTitle(os: Option[String], title: String): List[String] =
+    os match {
+      case Some(x) => List("#### " + title, x, "")
+      case _       => Nil
+    }
 
   private def id(s: String) = s.replaceAll("\\.", "_")
 
@@ -101,19 +101,20 @@ object CreateRulesMarkdown {
 
     val parametersTitle = List("#### Parameters")
 
-    val parameters = if (c.parameters.isEmpty) {
-      List("No parameters")
-    } else {
-      val headers = List("Parameter", "Description", "Type", "Default Value").map(s => <th>{s}</th>)
-      val header = <tr>{headers}</tr>
-      val f = c.parameters.map(p => <tr><td>{p._2.name}</td>
+    val parameters =
+      if (c.parameters.isEmpty)
+        List("No parameters")
+      else {
+        val headers = List("Parameter", "Description", "Type", "Default Value").map(s => <th>{s}</th>)
+        val header = <tr>{headers}</tr>
+        val f = c.parameters.map(p => <tr><td>{p._2.name}</td>
         <td>{config.getString(c.id + "." + p._2.name + ".label")}</td>
         <td>{p._2.typeName.name}</td>
         <td>{p._2.defaultValue}</td>
       </tr>)
-      val x = <table width="80%">{header}{f}</table>
-      List(x.toString)
-    }
+        val x = <table width="80%">{header}{f}</table>
+        List(x.toString)
+      }
 
     val x = doc.example.map(x => new PrettyPrinter(1000, 1).format(toXml(docFile + ":" + c.id, x)))
 
@@ -176,16 +177,14 @@ object CreateRulesMarkdown {
   }
 
   def main(args: Array[String]): Unit = {
-    if (args.length == 0) {
+    if (args.length == 0)
       usage(BuildInfo.version)
-    } else {
-      try {
-        generateToFile(args(0))
-      } catch {
-        case e: Exception => {
+    else {
+      try generateToFile(args(0))
+      catch {
+        case e: Exception =>
           e.printStackTrace(System.err)
           System.exit(1)
-        }
       }
     }
   }

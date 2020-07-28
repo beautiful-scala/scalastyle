@@ -47,9 +47,7 @@ class MethodLengthChecker extends CombinedChecker {
       t <- localvisit(ast.compilationUnit.immediateChildren.head)
       f <- traverse(t)
       if matches(f, ast.lines, maxLength, ignoreComments, ignoreEmpty)
-    } yield {
-      PositionError(t.position.get, List("" + maxLength))
-    }
+    } yield PositionError(t.position.get, List("" + maxLength))
 
     it
   }
@@ -73,27 +71,25 @@ class MethodLengthChecker extends CombinedChecker {
 
         // do not count deftoken line and end block line
         for (i <- (start + 1) until end) {
-          val lineText = lines.lines(i - 1).text.trim // zero based index, therefore "-1" when accessing the line
+          val lineText =
+            lines.lines(i - 1).text.trim // zero based index, therefore "-1" when accessing the line
           if (ignoreEmpty && lineText.isEmpty) {
             // do nothing
           } else if (lineText.startsWith(SinglelineComment)) {
             // do nothing
           } else {
-            if (lineText.contains(MultilineCommentsOpener)) {
+            if (lineText.contains(MultilineCommentsOpener))
               // multiline comment start /*
               // this line won't be counted even if
               // there exists any token before /*
               multilineComment = true
-            }
-            if (!multilineComment) {
+            if (!multilineComment)
               count = count + 1
-            }
-            if (lineText.contains(MultilineCommentsCloser)) {
+            if (lineText.contains(MultilineCommentsCloser))
               // multiline comment end */
               // this line won't be counted even if
               // there exists any token after */
               multilineComment = false
-            }
           }
         }
         count
@@ -106,15 +102,15 @@ class MethodLengthChecker extends CombinedChecker {
         lines.lines
           .slice(head - 1, tail) // extract actual method content
           .count(_.text.isEmpty) // count empty lines
-      } else {
+      } else
         0
-      }
       (tail - head + 1) - emptyLines > maxLines
     }
   }
 
-  private def localvisit(ast: Any): List[FunDefOrDclClazz] = ast match {
-    case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), localvisit(t.localDef)))
-    case t: Any         => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[FunDefOrDclClazz] =
+    ast match {
+      case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), localvisit(t.localDef)))
+      case t: Any         => visit(t, localvisit)
+    }
 }

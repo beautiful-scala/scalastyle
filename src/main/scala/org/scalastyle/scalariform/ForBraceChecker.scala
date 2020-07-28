@@ -30,9 +30,9 @@ class ForBraceChecker extends CombinedChecker {
     for {
       t <- VisitorHelper.getAll[ForExpr](ast.compilationUnit.immediateChildren.head)
       if requireBraces(t, ast.lines) && (
-        Tokens.LPAREN == t.lParenOrBrace.tokenType ||
-        Tokens.LPAREN == t.rParenOrBrace.tokenType
-      )
+          Tokens.LPAREN == t.lParenOrBrace.tokenType ||
+            Tokens.LPAREN == t.rParenOrBrace.tokenType
+        )
     } yield PositionError(t.lParenOrBrace.offset)
   }
 

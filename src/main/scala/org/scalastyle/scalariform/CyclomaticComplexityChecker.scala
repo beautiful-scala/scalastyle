@@ -50,9 +50,7 @@ class CyclomaticComplexityChecker extends CombinedChecker {
       f <- traverse(t)
       value = matches(f, ast.lines, maximum)
       if value > maximum
-    } yield {
-      PositionError(t.position.get, List("" + value, "" + maximum))
-    }
+    } yield PositionError(t.position.get, List("" + value, "" + maximum))
 
     it
   }
@@ -73,8 +71,9 @@ class CyclomaticComplexityChecker extends CombinedChecker {
     root - subs + 1
   }
 
-  private def localvisit(ast: Any): List[FunDefOrDclClazz] = ast match {
-    case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), visit(t, localvisit)))
-    case t: Any         => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[FunDefOrDclClazz] =
+    ast match {
+      case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), visit(t, localvisit)))
+      case t: Any         => visit(t, localvisit)
+    }
 }

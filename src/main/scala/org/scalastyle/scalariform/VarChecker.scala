@@ -31,23 +31,22 @@ abstract class VarChecker extends ScalariformChecker {
   def verify(ast: CompilationUnit): List[ScalastyleError] = {
     val it = for {
       f <- localvisit(false)(ast.immediateChildren(0))
-    } yield {
-      PositionError(f.firstToken.offset)
-    }
+    } yield PositionError(f.firstToken.offset)
 
     it.toList
   }
 
   protected def matches(enclosingFunction: Boolean): Boolean
 
-  private def localvisit(enclosingFunction: Boolean)(ast: Any): List[PatDefOrDcl] = ast match {
-    case t: PatDefOrDcl if t.valOrVarToken.tokenType == VAR && matches(enclosingFunction) =>
-      List(t) ::: visit(t, localvisit(enclosingFunction))
-    case t: TemplateBody      => visit(t, localvisit(false))
-    case t: FunBody           => visit(t, localvisit(true))
-    case t: AnonymousFunction => visit(t, localvisit(true))
-    case t: Any               => visit(t, localvisit(enclosingFunction))
-  }
+  private def localvisit(enclosingFunction: Boolean)(ast: Any): List[PatDefOrDcl] =
+    ast match {
+      case t: PatDefOrDcl if t.valOrVarToken.tokenType == VAR && matches(enclosingFunction) =>
+        List(t) ::: visit(t, localvisit(enclosingFunction))
+      case t: TemplateBody      => visit(t, localvisit(false))
+      case t: FunBody           => visit(t, localvisit(true))
+      case t: AnonymousFunction => visit(t, localvisit(true))
+      case t: Any               => visit(t, localvisit(enclosingFunction))
+    }
 }
 
 class VarLocalChecker extends VarChecker {

@@ -43,9 +43,8 @@ case class Lines(lines: Array[Line], lastChar: Char) {
 
     lines.foreach { l =>
       i = i + 1
-      if (position >= l.start && position < l.end) {
+      if (position >= l.start && position < l.end)
         return Some((l, i))
-      }
     }
 
     None
@@ -78,7 +77,7 @@ class ScalastyleChecker[T <: FileSpec](classLoader: Option[ClassLoader] = None) 
     StartWork() :: files
       .flatMap(file =>
         StartFile(file) :: checkerUtils.verifyFile(configuration, checks, file) :::
-        List(EndFile(file))
+            List(EndFile(file))
       )
       .toList ::: List(EndWork())
   }
@@ -131,17 +130,17 @@ class CheckerUtils(classLoader: Option[ClassLoader] = None) {
     file: T,
     source: String
   ): List[Message[T]] = {
-    if (source.isEmpty) {
+    if (source.isEmpty)
       Nil
-    } else {
+    else {
       val lines = Checker.parseLines(source)
       val scalariformAst = parseScalariform(source)
 
-      val commentFilters = if (configuration.commentFilter) {
-        CommentFilter.findCommentFilters(scalariformAst.comments, lines)
-      } else {
-        Nil
-      }
+      val commentFilters =
+        if (configuration.commentFilter)
+          CommentFilter.findCommentFilters(scalariformAst.comments, lines)
+        else
+          Nil
 
       classes
         .flatMap(cc => newInstance(cc.className, cc.level, cc.parameters, cc.customMessage, cc.customId))
@@ -188,13 +187,12 @@ class CheckerUtils(classLoader: Option[ClassLoader] = None) {
   def readFile(file: String, encoding: Option[String])(implicit codec: Codec): String = {
     @tailrec
     def readFileWithEncoding(file: String, encodings: List[String]): Option[String] = {
-      if (encodings.isEmpty) {
+      if (encodings.isEmpty)
         None
-      } else {
+      else {
         val encoding = encodings.head
-        try {
-          Some(Source.fromFile(file)(encoding).mkString)
-        } catch {
+        try Some(Source.fromFile(file)(encoding).mkString)
+        catch {
           case _: MalformedInputException =>
             // printxxln("caught MalFormedInputException with " + (if (encoding.isDefined) encoding.get else "default (" + codec.charSet + ")") + " encoding")
             readFileWithEncoding(file, encodings.tail)

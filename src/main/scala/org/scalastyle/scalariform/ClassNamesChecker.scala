@@ -53,9 +53,7 @@ class ClassNamesChecker extends ScalariformChecker {
     val it = for {
       List(left, right) <- ast.tokens.sliding(2)
       if left.tokenType == CLASS && regex.findAllIn(right.text).isEmpty
-    } yield {
-      PositionError(right.offset, List(regexString))
-    }
+    } yield PositionError(right.offset, List(regexString))
 
     it.toList
   }
@@ -72,9 +70,7 @@ class ObjectNamesChecker extends ScalariformChecker {
     val it = for {
       List(left, middle, right) <- ast.tokens.sliding(3)
       if left.tokenType != PACKAGE && middle.tokenType == OBJECT && regex.findAllIn(right.text).isEmpty
-    } yield {
-      PositionError(right.offset, List(regexString))
-    }
+    } yield PositionError(right.offset, List(regexString))
 
     it.toList
   }
@@ -91,11 +87,12 @@ class PackageNamesChecker extends ScalariformChecker {
     def isPartOfPackageName(t: Token): Boolean = (t.tokenType == DOT) || (t.tokenType == VARID)
 
     @annotation.tailrec
-    def getNextPackageName(tokens: List[Token]): (List[Token], List[Token]) = tokens match {
-      case Nil                                   => (Nil, Nil)
-      case hd :: tail if hd.tokenType == PACKAGE => tail.span(isPartOfPackageName)
-      case l: Any                                => getNextPackageName(l.dropWhile(tok => tok.tokenType != PACKAGE))
-    }
+    def getNextPackageName(tokens: List[Token]): (List[Token], List[Token]) =
+      tokens match {
+        case Nil                                   => (Nil, Nil)
+        case hd :: tail if hd.tokenType == PACKAGE => tail.span(isPartOfPackageName)
+        case l: Any                                => getNextPackageName(l.dropWhile(tok => tok.tokenType != PACKAGE))
+      }
 
     @annotation.tailrec
     def getPackageNameLoop(tokens: List[Token], myAccumulator: List[List[Token]]): List[List[Token]] =
@@ -113,9 +110,7 @@ class PackageNamesChecker extends ScalariformChecker {
     val it = for {
       pkgName <- packageNames.flatten
       if regex.findAllIn(pkgName.text).isEmpty
-    } yield {
-      PositionError(pkgName.offset, List(regexString))
-    }
+    } yield PositionError(pkgName.offset, List(regexString))
 
     it
   }
@@ -132,9 +127,7 @@ class PackageObjectNamesChecker extends ScalariformChecker {
     val it = for {
       List(left, middle, right) <- ast.tokens.sliding(3)
       if left.tokenType == PACKAGE && middle.tokenType == OBJECT && regex.findAllIn(right.text).isEmpty
-    } yield {
-      PositionError(right.offset, List(regexString))
-    }
+    } yield PositionError(right.offset, List(regexString))
 
     it.toList
   }
@@ -174,9 +167,9 @@ class MethodNamesChecker extends AbstractSingleMethodChecker[MethodNamesCheckerP
     )
 
   protected def matches(t: FullDefOrDclVisit, p: MethodNamesCheckerParameters): Boolean = {
-    if (p.ignoreOverride && isOverride(t.fullDefOrDcl.modifiers)) {
+    if (p.ignoreOverride && isOverride(t.fullDefOrDcl.modifiers))
       false
-    } else {
+    else {
       val name = t.funDefOrDcl.nameToken.text
       !matches(p.regex(), name) && !matches(p.ignoreRegex(), name)
     }

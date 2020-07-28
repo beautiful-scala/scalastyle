@@ -35,9 +35,7 @@ class NullChecker extends ScalariformChecker {
       (t, prev) <- ast.tokens.zip(dummyToken :: ast.tokens)
       if t.tokenType == Tokens.NULL
       if !(allowNullChecks && prev.tokenType == Tokens.VARID && (prev.text == "==" || prev.text == "!="))
-    } yield {
-      PositionError(t.offset)
-    }
+    } yield PositionError(t.offset)
 
     it
   }

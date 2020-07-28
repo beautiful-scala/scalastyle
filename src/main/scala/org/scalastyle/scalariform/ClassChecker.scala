@@ -60,7 +60,7 @@ class ClassTypeParameterChecker extends AbstractClassChecker {
 
   private[this] def innermostName(ast: Any): Option[String] = {
     ast match {
-      case typeParam: TypeParam => {
+      case typeParam: TypeParam =>
         typeParam.contents match {
           case List(GeneralTokens(list))                             => Some(list.head.text)
           case List(GeneralTokens(list), TypeParamClause(x))         => innermostName(x(1))
@@ -69,7 +69,6 @@ class ClassTypeParameterChecker extends AbstractClassChecker {
           case VarianceTypeElement(_) :: GeneralTokens(list) :: tail => Some(list.head.text)
           case _                                                     => None
         }
-      }
       case _ => None
     }
   }

@@ -67,24 +67,21 @@ object CommentFilter {
 
     it.foreach { ci =>
       (inMap.getOrElse(ci.id, false), ci.off) match {
-        case (true, false) => { // off then on, add a new CommentFilter
+        case (true, false) => // off then on, add a new CommentFilter
           list += CommentFilter(ci.id, start.getOrElse(ci.id, None), lines.toLineColumn(ci.position))
           inMap.put(ci.id, false)
           start.remove(ci.id)
-        }
         case (true, true)   => // off then off, do nothing
         case (false, false) => // on then on, do nothing
-        case (false, true) => { // on then off, reset start
+        case (false, true) => // on then off, reset start
           start.put(ci.id, lines.toLineColumn(ci.position))
           inMap.put(ci.id, true)
-        }
       }
     }
 
     inMap.foreach { e =>
-      if (e._2) {
+      if (e._2)
         list += CommentFilter(e._1, start.getOrElse(e._1, None), None)
-      }
     }
 
     list.toList
@@ -100,9 +97,9 @@ object CommentFilter {
   private def idMatches(key: String)(cf: CommentFilter) = cf.id.isEmpty || cf.id.get == key
 
   private def filterApplies[T <: FileSpec](se: StyleError[_])(cf: CommentFilter): Boolean = {
-    if (se.lineNumber.isEmpty) {
+    if (se.lineNumber.isEmpty)
       true
-    } else {
+    else {
       val m = se.lineNumber.get
       (cf.start, cf.end) match {
         case (Some(s), Some(e)) => m >= s.line && m < e.line

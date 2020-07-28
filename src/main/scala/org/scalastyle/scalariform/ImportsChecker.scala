@@ -52,9 +52,7 @@ abstract class AbstractImportChecker extends ScalariformChecker {
     val it = for {
       t <- localvisit(ast.immediateChildren)
       f <- traverse(t)
-    } yield {
-      PositionError(t.t.firstToken.offset)
-    }
+    } yield PositionError(t.t.firstToken.offset)
 
     it
   }
@@ -73,7 +71,7 @@ abstract class AbstractImportChecker extends ScalariformChecker {
     val is = t.importSelectors
 
     val firsts = is.firstImportSelector.firstToken.text ::
-      is.otherImportSelectors.map(_._2).map(is => is.firstToken.text)
+          is.otherImportSelectors.map(_._2).map(is => is.firstToken.text)
     firsts.map(f => imports(t.prefixExpr.tokens) + f)
   }
 
@@ -86,11 +84,12 @@ abstract class AbstractImportChecker extends ScalariformChecker {
 
   def matches(t: ImportClauseVisit): Boolean
 
-  private[this] def localvisit(ast: Any): List[ImportClauseVisit] = ast match {
-    case t: ImportClause =>
-      List(ImportClauseVisit(t, localvisit(t.importExpr), localvisit(t.otherImportExprs)))
-    case t: Any => visit(t, localvisit)
-  }
+  private[this] def localvisit(ast: Any): List[ImportClauseVisit] =
+    ast match {
+      case t: ImportClause =>
+        List(ImportClauseVisit(t, localvisit(t.importExpr), localvisit(t.otherImportExprs)))
+      case t: Any => visit(t, localvisit)
+    }
 }
 
 class IllegalImportsChecker extends AbstractImportChecker {
@@ -138,9 +137,9 @@ class ImportGroupingChecker extends ScalariformChecker {
   def verify(ast: CompilationUnit): List[ScalastyleError] = {
     val it = VisitorHelper.getAll[ImportClause](ast.immediateChildren)
 
-    if (it.isEmpty) {
+    if (it.isEmpty)
       List()
-    } else {
+    else {
       val importTokens = it.flatMap(_.tokens)
       val (min, max) = (importTokens.head.offset, importTokens.last.offset)
 
@@ -249,34 +248,28 @@ class ImportOrderChecker extends ScalariformChecker {
       // If a statement doesn't match the current group, there are two options:
       // - It belongs to a previous group, in which case an error is flagged.
       // - It belongs to a following group, in which case the group index moves forward.
-      for (i <- 0 until currentGroup) {
-        if (groups(i)._2.matcher(str).matches()) {
+      for (i <- 0 until currentGroup)
+        if (groups(i)._2.matcher(str).matches())
           return Seq(newError(offset, "wrongGroup", str, groups(i)._1, groups(currentGroup)._1))
-        }
-      }
 
       var nextGroup = currentGroup + 1
-      while (nextGroup < groups.size && !groups(nextGroup)._2.matcher(str).matches()) {
+      while (nextGroup < groups.size && !groups(nextGroup)._2.matcher(str).matches())
         nextGroup += 1
-      }
 
-      if (nextGroup == groups.size) {
+      if (nextGroup == groups.size)
         throw new IllegalStateException(s"FIXME: import statement does not match any group: $str")
-      }
 
       errors ++= checkGroupSeparation(currentGroup, nextGroup, offset)
       currentGroup = nextGroup
       lastImportInGroup = None
-    } else {
+    } else
       // If the statement is in the same group, make sure there is no empty line between it and
       // the previous import.
       errors ++= checkNoSeparator(offset)
-    }
 
     // Ensure import is in alphabetical order.
-    if (lastImportInGroup.isDefined && compareImports(lastImportInGroup.get, str) > 0) {
+    if (lastImportInGroup.isDefined && compareImports(lastImportInGroup.get, str) > 0)
       errors += newError(offset, "wrongOrderInGroup", str, lastImportInGroup.get)
-    }
 
     lastImportInGroup = Some(str)
     errors.toSeq
@@ -290,14 +283,13 @@ class ImportOrderChecker extends ScalariformChecker {
 
     val errors = new ListBuffer[ScalastyleError]()
     val names = Seq(first.contents.head.tokens.head.text) ++
-      others.map(_._2.contents.head.tokens.head.text)
+          others.map(_._2.contents.head.tokens.head.text)
 
     if (names.size > 1) {
       names.sliding(2).foreach {
         case Seq(left, right) =>
-          if (compareNames(left, right, isImport = false) > 0) {
+          if (compareNames(left, right, isImport = false) > 0)
             errors += newError(selectors.firstToken.offset, "wrongOrderInSelector", right, left)
-          }
       }
     }
 
@@ -318,11 +310,10 @@ class ImportOrderChecker extends ScalariformChecker {
       val separatorLines = countNewLines(start, nextGroupOffset) - 1
       val last = groups(lastGroup)._1
       val current = groups(nextGroup)._1
-      if (separatorLines == 0) {
+      if (separatorLines == 0)
         return Some(newError(nextGroupOffset, "missingEmptyLine", last, current))
-      } else if (maxBlankLines > 0 && separatorLines > maxBlankLines) {
+      else if (maxBlankLines > 0 && separatorLines > maxBlankLines)
         return Some(newError(nextGroupOffset, "tooManyEmptyLines", maxBlankLines, last, current))
-      }
     }
 
     None
@@ -334,9 +325,8 @@ class ImportOrderChecker extends ScalariformChecker {
   private def checkNoSeparator(offset: Int): Option[ScalastyleError] = {
     if (lastImportInGroup.isDefined) {
       val start = lastImport.get.lastToken.offset + lastImport.get.lastToken.length
-      if (countNewLines(start, offset) != 1) {
+      if (countNewLines(start, offset) != 1)
         return Some(newError(offset, "noEmptyLine"))
-      }
     }
     None
   }
@@ -357,10 +347,9 @@ class ImportOrderChecker extends ScalariformChecker {
               // Do not count a new line after a multi-line comment.
               ignoreNext = true
             case w: Whitespace =>
-              if (!ignoreNext) {
+              if (!ignoreNext)
                 // Assumes "\n" only used for new lines.
                 count += w.text.count(_ == '\n')
-              }
               ignoreNext = true
             case _ =>
             // Nothing to do.
@@ -384,22 +373,20 @@ class ImportOrderChecker extends ScalariformChecker {
       val comp1 = imp1Components(i)
       val comp2 = imp2Components(i)
       val result = compareNames(comp1, comp2, isImport = true)
-      if (result != 0) {
+      if (result != 0)
         return result
-      }
     }
 
     // At this point, there is still a special case: where one import is a multi-import block
     // (and, thus, has no extra components) and another is a wildcard; the wildcard should come
     // first.
     val diff = imp1Components.size - imp2Components.size
-    if (diff == -1 && imp1.endsWith(".") && imp2Components.last == "_") {
+    if (diff == -1 && imp1.endsWith(".") && imp2Components.last == "_")
       1
-    } else if (diff == 1 && imp2.endsWith(".") && imp1Components.last == "_") {
+    else if (diff == 1 && imp2.endsWith(".") && imp1Components.last == "_")
       -1
-    } else {
+    else
       diff
-    }
   }
 
   /**
@@ -414,26 +401,25 @@ class ImportOrderChecker extends ScalariformChecker {
    *                 rules for names within a selector.
    */
   private[scalariform] def compareNames(name1: String, name2: String, isImport: Boolean): Int = {
-    if (lexicographic && isImport) {
+    if (lexicographic && isImport)
       name1.compareTo(name2)
-    } else if (name1 != "_") {
-      if (name2 == "_") {
+    else if (name1 != "_") {
+      if (name2 == "_")
         -1 * compareNames(name2, name1, isImport)
-      } else {
+      else {
         val isName1UpperCase = Character.isUpperCase(name1.codePointAt(0))
         val isName2UpperCase = Character.isUpperCase(name2.codePointAt(0))
 
-        if (isName1UpperCase == isName2UpperCase) {
+        if (isName1UpperCase == isName2UpperCase)
           name1.compareToIgnoreCase(name2)
-        } else {
+        else {
           // Classes come before subpackages in import statements, after in selectors.
           val order = if (isImport) -1 else 1
           if (isName1UpperCase) order else -order
         }
       }
-    } else {
-      if (isImport) -1 else 1
-    }
+    } else if (isImport) -1
+    else 1
   }
 
   private def newError(offset: Int, errorKey: String, args: Any*): ScalastyleError =

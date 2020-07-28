@@ -85,9 +85,8 @@ object Main {
       }
     }
 
-    if (config.config.isEmpty || config.directories.isEmpty) {
+    if (config.config.isEmpty || config.directories.isEmpty)
       config = config.copy(error = true)
-    }
 
     config
   }
@@ -100,9 +99,8 @@ object Main {
       if (config.error) {
         usage(BuildInfo.version)
         1
-      } else {
-        if (execute(config)) 1 else 0
-      }
+      } else if (execute(config)) 1
+      else 0
     }
 
     System.exit(exitVal)
@@ -122,10 +120,9 @@ object Main {
     val config = ConfigFactory.load(cl.getOrElse(this.getClass.getClassLoader))
     val outputResult = new TextOutput(config, mc.verbose, mc.quiet).output(messages)
     mc.xmlFile match {
-      case Some(x) => {
+      case Some(x) =>
         val encoding = mc.xmlEncoding.getOrElse(codec.charSet).toString
         XmlOutput.save(config, x, encoding, messages)
-      }
       case None =>
     }
 

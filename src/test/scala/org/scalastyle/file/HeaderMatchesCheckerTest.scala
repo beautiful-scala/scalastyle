@@ -87,20 +87,19 @@ class HeaderMatchesCheckerTest extends AssertionsForJUnit with CheckerTest {
     assertErrors(List(lineError(4)), shortSourceWin, Map("header" -> licenseUnix))
   }
 
-  def literalOK(c: Char): Boolean = c match {
-    case ' ' | '-' | ':' | '/' | '\n'  => true
-    case ld: Any if ld.isLetterOrDigit => true
-    case _                             => false
-  }
+  def literalOK(c: Char): Boolean =
+    c match {
+      case ' ' | '-' | ':' | '/' | '\n'  => true
+      case ld: Any if ld.isLetterOrDigit => true
+      case _                             => false
+    }
 
-  val licenceRegexUnix = {
+  val licenceRegexUnix =
     (licenseUnix flatMap { c => if (literalOK(c)) c.toString else "\\" + c })
       .replace("2009-2010", "(?:\\d{4}-)?\\d{4}")
-  }
-  val licenceRegexWin = {
+  val licenceRegexWin =
     (licenseWin flatMap { c => if (literalOK(c)) c.toString else "\\" + c })
       .replace("2009-2010", "(?:\\d{4}-)?\\d{4}")
-  }
 
   @Test def testRegexOK(): Unit = {
     val sourceLines = licenseLines ::: baseSourceLines

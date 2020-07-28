@@ -29,10 +29,8 @@ class EmptyInterpolatedStringChecker extends ScalariformChecker {
     val it = for {
       List(left, right) <- ast.tokens.sliding(2)
       if left.tokenType == INTERPOLATION_ID && typesSupportingVariables.contains(left.text) &&
-      interpolationRegex.findFirstIn(right.text).isEmpty
-    } yield {
-      PositionError(right.offset)
-    }
+        interpolationRegex.findFirstIn(right.text).isEmpty
+    } yield PositionError(right.offset)
 
     it.toList
   }

@@ -72,7 +72,7 @@ case class StyleError[+T <: FileSpec](
 ) extends Message[T] {
   override def toString(): String =
     "StyleError key=" + key + " args=" + args + " lineNumber=" + lineNumber +
-    " column=" + column + " customMessage=" + customMessage
+        " column=" + column + " customMessage=" + customMessage
 }
 case class StyleException[+T <: FileSpec](
   fileSpec: T,

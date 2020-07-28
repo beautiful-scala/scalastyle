@@ -49,13 +49,11 @@ class HeaderMatchesChecker extends FileChecker {
 
       found match {
         case Some(x) => List(LineError(x + 1))
-        case None => {
-          if (ast.lines.size < header.lines.length) {
+        case None =>
+          if (ast.lines.size < header.lines.length)
             List(LineError(ast.lines.length))
-          } else {
+          else
             List()
-          }
-        }
       }
     }
   }

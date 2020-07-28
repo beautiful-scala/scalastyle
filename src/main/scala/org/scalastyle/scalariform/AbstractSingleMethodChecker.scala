@@ -47,9 +47,7 @@ abstract class AbstractSingleMethodChecker[T] extends ScalariformChecker {
       t <- localvisit(insideDefOrValOrVar = false)(ast.immediateChildren.head)
       f <- traverse(t)
       if matches(f, p)
-    } yield {
-      PositionError(f.funDefOrDcl.nameToken.offset, describeParameters(p))
-    }
+    } yield PositionError(f.funDefOrDcl.nameToken.offset, describeParameters(p))
 
     it
   }
@@ -60,30 +58,33 @@ abstract class AbstractSingleMethodChecker[T] extends ScalariformChecker {
   protected def matches(t: FullDefOrDclVisit, parameters: T): Boolean
   protected def describeParameters(parameters: T): List[String] = Nil
 
-  private def localvisit(insideDefOrValOrVar: Boolean)(ast: Any): List[FullDefOrDclVisit] = ast match {
-    case t: FullDefOrDcl => {
-      t.defOrDcl match {
-        case f: FunDefOrDcl => List(FullDefOrDclVisit(t, f, localvisit(true)(f), insideDefOrValOrVar))
-        case f: PatDefOrDcl => localvisit(true)(f.equalsClauseOption)
-        case _              => localvisit(insideDefOrValOrVar)(t.defOrDcl)
-      }
+  private def localvisit(insideDefOrValOrVar: Boolean)(ast: Any): List[FullDefOrDclVisit] =
+    ast match {
+      case t: FullDefOrDcl =>
+        t.defOrDcl match {
+          case f: FunDefOrDcl => List(FullDefOrDclVisit(t, f, localvisit(true)(f), insideDefOrValOrVar))
+          case f: PatDefOrDcl => localvisit(true)(f.equalsClauseOption)
+          case _              => localvisit(insideDefOrValOrVar)(t.defOrDcl)
+        }
+      case t: FunDefOrDcl => localvisit(true)(t.funBodyOpt)
+      case t: Any         => visit(t, localvisit(insideDefOrValOrVar))
     }
-    case t: FunDefOrDcl => localvisit(true)(t.funBodyOpt)
-    case t: Any         => visit(t, localvisit(insideDefOrValOrVar))
-  }
 
-  protected def isOverride(modifiers: List[Modifier]) = modifiers.exists {
-    case sm: SimpleModifier if sm.token.text == "override" => true
-    case _                                                 => false
-  }
+  protected def isOverride(modifiers: List[Modifier]) =
+    modifiers.exists {
+      case sm: SimpleModifier if sm.token.text == "override" => true
+      case _                                                 => false
+    }
 
-  protected def privateOrProtected(modifiers: List[Modifier]) = modifiers.exists {
-    case am: AccessModifier => true
-    case _                  => false
-  }
+  protected def privateOrProtected(modifiers: List[Modifier]) =
+    modifiers.exists {
+      case am: AccessModifier => true
+      case _                  => false
+    }
 
-  protected def isConstructor(defOrDcl: DefOrDcl) = defOrDcl match {
-    case fun: FunDefOrDcl => fun.nameToken.tokenType == Tokens.THIS
-    case _                => false
-  }
+  protected def isConstructor(defOrDcl: DefOrDcl) =
+    defOrDcl match {
+      case fun: FunDefOrDcl => fun.nameToken.tokenType == Tokens.THIS
+      case _                => false
+    }
 }

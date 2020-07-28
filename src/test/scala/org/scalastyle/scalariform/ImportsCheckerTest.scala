@@ -212,9 +212,7 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
     "maxBlankLines" -> "2"
   )
   val paramsLexicographic =
-    params ++ Seq(
-      "lexicographic" -> "true"
-    )
+    params ++ Seq("lexicographic" -> "true")
 
   @Test def testNameComparison(): Unit = {
     val checker = new ImportOrderChecker()

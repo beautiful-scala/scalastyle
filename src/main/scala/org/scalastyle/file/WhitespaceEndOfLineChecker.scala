@@ -61,9 +61,7 @@ class WhitespaceEndOfLineChecker extends FileChecker {
       (hasWhitespace, whitespaceIndex) = endsWithWhitespace(line.text)
       if hasWhitespace
       if !ignoreWhitespaceLines || line.text.trim.nonEmpty
-    } yield {
-      ColumnError(lineIndex + 1, whitespaceIndex)
-    }
+    } yield ColumnError(lineIndex + 1, whitespaceIndex)
 
     errors.toList
   }

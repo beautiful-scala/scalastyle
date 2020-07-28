@@ -20,9 +20,9 @@ import _root_.scalariform.lexer.Token
 import _root_.scalariform.lexer.TokenType
 import _root_.scalariform.lexer.Tokens.INTEGER_LITERAL
 import _root_.scalariform.lexer.Tokens.RETURN
+import _root_.scalariform.lexer.Tokens.THROW
 import _root_.scalariform.lexer.Tokens.VARID
 import _root_.scalariform.lexer.Tokens.WHILE
-import _root_.scalariform.lexer.Tokens.THROW
 import _root_.scalariform.parser.CompilationUnit
 import org.scalastyle.PositionError
 import org.scalastyle.ScalariformChecker

@@ -31,12 +31,10 @@ class SpacesBeforePlusChecker extends ScalariformChecker {
     val it = for {
       List(left, middle, right) <- ast.tokens.sliding(3)
       if middle.tokenType == PLUS && left.tokenType != LBRACKET && left.tokenType != NEWLINE && charsBetweenTokens(
-        left,
-        middle
-      ) == 0
-    } yield {
-      PositionError(middle.offset)
-    }
+          left,
+          middle
+        ) == 0
+    } yield PositionError(middle.offset)
 
     it.toList
   }

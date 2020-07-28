@@ -32,15 +32,14 @@ class NumberOfTypesChecker extends ScalariformChecker {
 
     val it = for {
       f <- localvisit(ast.immediateChildren(0))
-    } yield {
-      f
-    }
+    } yield f
 
     if (it.size > maximumTypes) List(FileError(List(maximumTypes.toString))) else List()
   }
 
-  private def localvisit(ast: Any): List[TmplDef] = ast match {
-    case t: TmplDef => List(t) ::: localvisit(t.templateBodyOption)
-    case t: Any     => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[TmplDef] =
+    ast match {
+      case t: TmplDef => List(t) ::: localvisit(t.templateBodyOption)
+      case t: Any     => visit(t, localvisit)
+    }
 }

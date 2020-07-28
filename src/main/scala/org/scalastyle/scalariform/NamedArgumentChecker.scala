@@ -36,11 +36,10 @@ class NamedArgumentChecker extends ScalariformChecker {
           case _ =>
             false
         }
-        if (namelessLiteral) {
+        if (namelessLiteral)
           List(PositionError(offset))
-        } else {
+        else
           Nil
-        }
 
       case Argument(Expr(List(StringInterpolation(Token(_, _, offset, _), _, _)))) if checkString =>
         List(PositionError(offset))

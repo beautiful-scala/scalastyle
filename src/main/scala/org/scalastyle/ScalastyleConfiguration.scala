@@ -39,12 +39,13 @@ object Level {
   val Error = "error"
   val Info = "info"
 
-  def apply(s: String): Level = s match {
-    case Warning => WarningLevel
-    case Error   => ErrorLevel
-    case Info    => InfoLevel
-    case _       => WarningLevel
-  }
+  def apply(s: String): Level =
+    s match {
+      case Warning => WarningLevel
+      case Error   => ErrorLevel
+      case Info    => InfoLevel
+      case _       => WarningLevel
+    }
 }
 sealed abstract class Level(val name: String)
 case object ErrorLevel extends Level(Level.Error)
@@ -56,12 +57,13 @@ object ParameterType {
   val String = "string"
   val Boolean = "boolean"
 
-  def apply(s: String): ParameterType = s match {
-    case Integer => IntegerType
-    case String  => StringType
-    case Boolean => BooleanType
-    case _       => StringType
-  }
+  def apply(s: String): ParameterType =
+    s match {
+      case Integer => IntegerType
+      case String  => StringType
+      case Boolean => BooleanType
+      case _       => StringType
+    }
 }
 sealed abstract class ParameterType(val name: String)
 case object IntegerType extends ParameterType(ParameterType.Integer)
@@ -140,14 +142,12 @@ object ScalastyleConfiguration {
           <parameter name={p._1}>{text}</parameter>
         }
         <parameters>{ps}</parameters>
-      } else {
+      } else
         scala.xml.Null
-      }
       val customMessage = c.customMessage match {
-        case Some(s) => {
+        case Some(s) =>
           val text = toCDATA(s)
           <customMessage>{text}</customMessage>
-        }
         case None => scala.xml.Null
       }
       val check = <check class={c.className} level={c.level.name} enabled={if (c.enabled) True else False}>{
@@ -240,43 +240,44 @@ class XmlPrettyPrinter(width: Int, step: Int) extends PrettyPrinter(width, step)
 
   // This is just a copy of what's in scala.xml.PrettyPrinter
   /** @param tail: what we'd like to squeeze in */
-  protected override def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit = node match {
+  protected override def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit =
+    node match {
 
-    case Text(s) if s.trim() == "" =>
-      ;
-    case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
-      makeBox(ind, node.toString().trim())
-    case g @ Group(xs) =>
-      traverse(xs.iterator, pscope, ind)
-    case _ =>
-      val test = {
-        val sb = new StringBuilder()
-        Utility.serialize(node, pscope, sb, false, minimizeTags = MinimizeMode.Default)
-        if (doPreserve(node)) sb.toString else TextBuffer.fromString(sb.toString()).toText(0).data
-      }
-      if (childrenAreLeaves(node) && fits(test)) {
-        makeBox(ind, test)
-      } else {
-        val (stg, len2) = startTag(node, pscope)
-        val etg = endTag(node)
-        if (stg.length < width - cur) { // start tag fits
-          makeBox(ind, stg)
-          makeBreak()
-          traverse(node.child.iterator, node.scope, ind + step)
-          makeBox(ind, etg)
-        } else if (len2 < width - cur) {
-          // <start label + attrs + tag + content + end tag
-          makeBox(ind, stg.substring(0, len2))
-          makeBreak() // todo: break the rest in pieces
-          makeBox(ind, stg.substring(len2, stg.length))
-          makeBreak()
-          traverse(node.child.iterator, node.scope, ind + step)
-          makeBox(cur, etg)
-          makeBreak()
-        } else { // give up
-          makeBox(ind, test)
-          makeBreak()
+      case Text(s) if s.trim() == "" =>
+        ;
+      case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
+        makeBox(ind, node.toString().trim())
+      case g @ Group(xs) =>
+        traverse(xs.iterator, pscope, ind)
+      case _ =>
+        val test = {
+          val sb = new StringBuilder()
+          Utility.serialize(node, pscope, sb, false, minimizeTags = MinimizeMode.Default)
+          if (doPreserve(node)) sb.toString else TextBuffer.fromString(sb.toString()).toText(0).data
         }
-      }
-  }
+        if (childrenAreLeaves(node) && fits(test))
+          makeBox(ind, test)
+        else {
+          val (stg, len2) = startTag(node, pscope)
+          val etg = endTag(node)
+          if (stg.length < width - cur) { // start tag fits
+            makeBox(ind, stg)
+            makeBreak()
+            traverse(node.child.iterator, node.scope, ind + step)
+            makeBox(ind, etg)
+          } else if (len2 < width - cur) {
+            // <start label + attrs + tag + content + end tag
+            makeBox(ind, stg.substring(0, len2))
+            makeBreak() // todo: break the rest in pieces
+            makeBox(ind, stg.substring(len2, stg.length))
+            makeBreak()
+            traverse(node.child.iterator, node.scope, ind + step)
+            makeBox(cur, etg)
+            makeBreak()
+          } else { // give up
+            makeBox(ind, test)
+            makeBreak()
+          }
+        }
+    }
 }

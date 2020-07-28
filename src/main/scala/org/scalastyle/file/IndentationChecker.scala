@@ -25,8 +25,8 @@ import org.scalastyle.ScalastyleError
 object NormalizedLine {
   def normalize(lines: Lines, tabSize: Int): Array[NormalizedLine] =
     lines.lines.zipWithIndex map {
-      case (line, index) => NormalizedLine(index + 1, line, tabSize)
-    }
+        case (line, index) => NormalizedLine(index + 1, line, tabSize)
+      }
 }
 
 case class NormalizedLine(lineNumber: Int, line: Line, tabSize: Int) {
@@ -51,15 +51,13 @@ case class NormalizedLine(lineNumber: Int, line: Line, tabSize: Int) {
     var i = 0
 
     while (i < len) {
-      if (sb.charAt(i) == '\t') {
+      if (sb.charAt(i) == '\t')
         sb.replace(i, i + 1, spaces(i, tabSize))
-      }
       i += 1
     }
 
-    if (sb.endsWith("\r")) {
+    if (sb.endsWith("\r"))
       sb.setLength(sb.length - 1)
-    }
 
     sb.toString
   }
@@ -102,11 +100,10 @@ class IndentationChecker extends FileChecker {
    */
   private def verifyClassIndent(lines: Seq[NormalizedLine], classParamIndentSize: Int) = {
     def isInvalid(l1: NormalizedLine, l2: NormalizedLine): Boolean = {
-      if (startsParamList(l1) && !l1.normalizedText.contains(" extends ")) {
+      if (startsParamList(l1) && !l1.normalizedText.contains(" extends "))
         (l2.indentDepth - l1.indentDepth) != classParamIndentSize
-      } else {
+      else
         false
-      }
     }
 
     for { Seq(l1, l2) <- lines.sliding(2) if isInvalid(l1, l2) } yield l2.mkError()
@@ -117,11 +114,10 @@ class IndentationChecker extends FileChecker {
    */
   private def verifyMethodIndent(lines: Seq[NormalizedLine], methodParamIndentSize: Int) = {
     def isInvalid(l1: NormalizedLine, l2: NormalizedLine): Boolean = {
-      if (startsMethodDef(l1)) {
+      if (startsMethodDef(l1))
         (l2.indentDepth - l1.indentDepth) != methodParamIndentSize
-      } else {
+      else
         false
-      }
     }
 
     for { Seq(l1, l2) <- lines.sliding(2) if isInvalid(l1, l2) } yield l2.mkError()

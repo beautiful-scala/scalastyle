@@ -32,9 +32,7 @@ abstract class AbstractClassChecker extends ScalariformChecker {
     val it = for {
       f <- visit[TmplDef, TmplClazz](map)(ast.immediateChildren.head)
       t <- traverse(f, matches)
-    } yield {
-      PositionError(t.t.name.offset)
-    }
+    } yield PositionError(t.t.name.offset)
 
     it
   }

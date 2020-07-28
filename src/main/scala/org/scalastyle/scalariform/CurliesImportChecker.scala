@@ -31,16 +31,17 @@ class CurliesImportChecker extends ScalariformChecker {
   def verify(ast: CompilationUnit): List[ScalastyleError] =
     findBlockImports(ast)
 
-  private def findBlockImports(in: AstNode): List[PositionError] = in match {
+  private def findBlockImports(in: AstNode): List[PositionError] =
+    in match {
 
-    // comma separated import
-    case ImportClause(_, firstImport, otherImports, _) if otherImports.nonEmpty =>
-      List(PositionError(firstImport.firstToken.offset))
-    // other block imports
-    case b: BlockImportExpr => List(PositionError(b.firstToken.offset))
+      // comma separated import
+      case ImportClause(_, firstImport, otherImports, _) if otherImports.nonEmpty =>
+        List(PositionError(firstImport.firstToken.offset))
+      // other block imports
+      case b: BlockImportExpr => List(PositionError(b.firstToken.offset))
 
-    // remaining nodes
-    case a: AstNode => a.immediateChildren flatMap findBlockImports
-  }
+      // remaining nodes
+      case a: AstNode => a.immediateChildren flatMap findBlockImports
+    }
 
 }

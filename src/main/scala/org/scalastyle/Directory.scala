@@ -46,9 +46,9 @@ object Directory {
   }
 
   private[this] def createFileExclusionFilter(excludedFiles: Seq[String]): Option[FileFilter] = {
-    if (excludedFiles.isEmpty) {
+    if (excludedFiles.isEmpty)
       None
-    } else {
+    else {
       val exclusionPatterns = excludedFiles.map(_.r)
       Some(new FileFilter {
         def accept(file: File): Boolean = {
@@ -68,17 +68,16 @@ object Directory {
     def getFilesHelper(currentFiles: Iterable[File], acc: Set[File]): Set[File] = {
       currentFiles.headOption match {
         case Some(f) =>
-          if (excludeFilter.exists(_.accept(f))) {
+          if (excludeFilter.exists(_.accept(f)))
             getFilesHelper(currentFiles.tail, acc)
-          } else if (f.isDirectory) {
+          else if (f.isDirectory) {
             val newCurrentFiles = currentFiles.tail ++ f.listFiles
             getFilesHelper(newCurrentFiles, acc)
           } else if (scalaFileFilter.accept(f) && !acc(f)) {
             val newAcc = acc + f
             getFilesHelper(currentFiles.tail, newAcc)
-          } else {
+          } else
             getFilesHelper(currentFiles.tail, acc)
-          }
         case None => acc
       }
     }

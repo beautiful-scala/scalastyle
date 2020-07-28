@@ -41,17 +41,13 @@ class MagicNumberChecker extends ScalariformChecker {
       t <- localvisit(ast.immediateChildren.head)
       f <- traverse(t)
       if matches(f, ignores)
-    } yield {
-      f
-    }
+    } yield f
 
     val valList = (for {
       t <- localvisitVal(ast.immediateChildren.head)
       f <- traverseVal(t)
       g <- toOption(f)
-    } yield {
-      g
-    }).map {
+    } yield g).map {
       case Expr(List(t: Expr)) => t
       case d: Any              => d
     }
@@ -97,11 +93,12 @@ class MagicNumberChecker extends ScalariformChecker {
     }
   }
 
-  private def localvisit(ast: Any): List[ExprVisit] = ast match {
-    case Expr(List(t: Expr)) => List(ExprVisit(t, t.firstToken.offset, localvisit(t.contents)))
-    case t: Expr             => List(ExprVisit(t, t.firstToken.offset, localvisit(t.contents)))
-    case t: Any              => VisitorHelper.visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[ExprVisit] =
+    ast match {
+      case Expr(List(t: Expr)) => List(ExprVisit(t, t.firstToken.offset, localvisit(t.contents)))
+      case t: Expr             => List(ExprVisit(t, t.firstToken.offset, localvisit(t.contents)))
+      case t: Any              => VisitorHelper.visit(t, localvisit)
+    }
 
   case class PatDefOrDclVisit(
     t: PatDefOrDcl,
@@ -111,19 +108,20 @@ class MagicNumberChecker extends ScalariformChecker {
     equalsClauseOption: List[PatDefOrDclVisit]
   )
 
-  private def localvisitVal(ast: Any): List[PatDefOrDclVisit] = ast match {
-    case t: PatDefOrDcl =>
-      List(
-        PatDefOrDclVisit(
-          t,
-          t.valOrVarToken,
-          localvisitVal(t.pattern),
-          localvisitVal(t.otherPatterns),
-          localvisitVal(t.equalsClauseOption)
+  private def localvisitVal(ast: Any): List[PatDefOrDclVisit] =
+    ast match {
+      case t: PatDefOrDcl =>
+        List(
+          PatDefOrDclVisit(
+            t,
+            t.valOrVarToken,
+            localvisitVal(t.pattern),
+            localvisitVal(t.otherPatterns),
+            localvisitVal(t.equalsClauseOption)
+          )
         )
-      )
-    case t: Any => VisitorHelper.visit(t, localvisitVal)
-  }
+      case t: Any => VisitorHelper.visit(t, localvisitVal)
+    }
 
   private def traverseVal(t: PatDefOrDclVisit): List[PatDefOrDclVisit] =
     t :: t.equalsClauseOption.flatMap(traverseVal)

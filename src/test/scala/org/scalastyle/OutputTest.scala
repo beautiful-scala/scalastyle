@@ -151,9 +151,8 @@ class OutputTest extends AssertionsForJUnit {
 
     new java.io.File("target").mkdir()
 
-    try {
-      XmlOutput.save(ConfigFactory.load(), "target/does.not.exist/OutputTest.xml", "UTF-8", messages)
-    } catch {
+    try XmlOutput.save(ConfigFactory.load(), "target/does.not.exist/OutputTest.xml", "UTF-8", messages)
+    catch {
       case e: java.io.FileNotFoundException => // OK
       case _: Throwable                     => fail("expected FileNotFoundException")
     }

@@ -39,9 +39,7 @@ class IfBraceChecker extends CombinedChecker {
     val it = for {
       t <- localvisit(ast.compilationUnit)
       f <- traverse(t, ast.lines, singleLineAllowed, doubleLineAllowed)
-    } yield {
-      PositionError(f.position)
-    }
+    } yield PositionError(f.position)
 
     it
   }
@@ -83,21 +81,20 @@ class IfBraceChecker extends CombinedChecker {
 
     (ifLine, elseLine) match {
       case (Some(x), None) => if (singleLineAllowed) !sameLine(ifLine, ifBodyLine) else true
-      case (Some(x), Some(y)) => {
-        if (!sameLine(ifLine, ifBodyLine) || !sameLine(elseLine, elseBodyLine)) {
+      case (Some(x), Some(y)) =>
+        if (!sameLine(ifLine, ifBodyLine) || !sameLine(elseLine, elseBodyLine))
           true
-        } else {
-          if (sameLine(ifLine, elseLine)) !singleLineAllowed else !doubleLineAllowed
-        }
-      }
+        else if (sameLine(ifLine, elseLine)) !singleLineAllowed
+        else !doubleLineAllowed
       case _ => false
     }
   }
 
-  private[this] def sameLine(l1: Option[LineColumn], l2: Option[LineColumn]) = (l1, l2) match {
-    case (Some(x), Some(y)) => x.line == y.line
-    case _                  => true
-  }
+  private[this] def sameLine(l1: Option[LineColumn], l2: Option[LineColumn]) =
+    (l1, l2) match {
+      case (Some(x), Some(y)) => x.line == y.line
+      case _                  => true
+    }
 
   /** this returns Some(x) if we are NOT BlockExpr, i.e. there are no braces */
   private[this] def firstLineOfGeneralTokens(body: Expr, lines: Lines) = {
@@ -107,13 +104,13 @@ class IfBraceChecker extends CombinedChecker {
         case e: IfExpr    => None
         case e: Any       => lines.toLineColumn(e.tokens.head.offset)
       }
-    } else {
+    } else
       None
-    }
   }
 
-  private def localvisit(ast: Any): List[IfExprClazz] = ast match {
-    case t: IfExpr => List(IfExprClazz(t, t.ifToken.offset, localvisit(t.body), localvisit(t.elseClause)))
-    case t: Any    => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[IfExprClazz] =
+    ast match {
+      case t: IfExpr => List(IfExprClazz(t, t.ifToken.offset, localvisit(t.body), localvisit(t.elseClause)))
+      case t: Any    => visit(t, localvisit)
+    }
 }

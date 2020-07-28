@@ -429,9 +429,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
     for {
       (declerations, ignoreTokenType) <- cases
       decleration                     <- declerations
-    } {
-      assertErrors(Nil, decleration, Map("ignoreTokenTypes" -> ignoreTokenType))
-    }
+    } assertErrors(Nil, decleration, Map("ignoreTokenTypes" -> ignoreTokenType))
   }
 
   @Test def ignoreOverridden(): Unit = {

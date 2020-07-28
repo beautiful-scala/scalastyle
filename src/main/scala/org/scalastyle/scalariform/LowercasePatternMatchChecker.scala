@@ -32,9 +32,7 @@ class LowercasePatternMatchChecker extends ScalariformChecker {
     val it = for {
       f <- visit(map)(ast.immediateChildren.head)
       if matches(f)
-    } yield {
-      PositionError(f.pattern.firstToken.offset)
-    }
+    } yield PositionError(f.pattern.firstToken.offset)
 
     it
   }

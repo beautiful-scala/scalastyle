@@ -33,9 +33,7 @@ class SpacesAfterPlusChecker extends ScalariformChecker {
     val it = for {
       t <- localVisit(ast.immediateChildren(0))
       if isInvalidPlusInfix(t)
-    } yield {
-      PositionError(t.infixId.offset)
-    }
+    } yield PositionError(t.infixId.offset)
 
     it.toList
   }
@@ -45,13 +43,13 @@ class SpacesAfterPlusChecker extends ScalariformChecker {
       val isLBracket = infix.left.lastOption.exists(_.tokens.lastOption.exists(_.tokenType == LBRACKET))
       val newLineExists = infix.newlineOption.exists(_.tokenType == NEWLINE)
       !isLBracket && !newLineExists && charsBetweenTokens(infix.infixId, infix.right.head.tokens.head) == 0
-    } else {
+    } else
       false
-    }
   }
 
-  private def localVisit(ast: Any): List[InfixExpr] = ast match {
-    case expr: InfixExpr => List(expr)
-    case other: Any      => visit(other, localVisit)
-  }
+  private def localVisit(ast: Any): List[InfixExpr] =
+    ast match {
+      case expr: InfixExpr => List(expr)
+      case other: Any      => visit(other, localVisit)
+    }
 }

@@ -29,9 +29,7 @@ abstract class JavaAnnotationChecker extends ScalariformChecker {
     val it = for {
       t <- VisitorHelper.getAll[ParserAnnotation](ast.immediateChildren.head)
       if isValid(t)
-    } yield {
-      PositionError(t.firstToken.offset)
-    }
+    } yield PositionError(t.firstToken.offset)
 
     it
   }

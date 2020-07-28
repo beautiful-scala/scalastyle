@@ -62,24 +62,24 @@ object VisitorHelper {
     myVisit[T, X](manifest.runtimeClass.asInstanceOf[Class[T]], fn)(ast)
 
   private[this] def myVisit[T <: AstNode, X](clazz: Class[T], fn: T => List[X])(ast: Any): List[X] = {
-    if (ast.getClass.equals(clazz)) {
+    if (ast.getClass.equals(clazz))
       fn(ast.asInstanceOf[T]) ::: visit(ast, myVisit(clazz, fn))
-    } else {
+    else
       visit(ast, myVisit(clazz, fn))
-    }
   }
 
-  protected[scalariform] def visit[T](ast: Any, visitfn: (Any) => List[T]): List[T] = ast match {
-    case a: AstNode                => visitfn(a.immediateChildren)
-    case t: Token                  => List()
-    case Some(x)                   => visitfn(x)
-    case xs @ (_ :: _)             => xs.flatMap(visitfn(_))
-    case Left(x)                   => visitfn(x)
-    case Right(x)                  => visitfn(x)
-    case (l, r)                    => visitfn(l) ::: visitfn(r)
-    case (x, y, z)                 => visitfn(x) ::: visitfn(y) ::: visitfn(z)
-    case true | false | Nil | None => List()
-  }
+  protected[scalariform] def visit[T](ast: Any, visitfn: (Any) => List[T]): List[T] =
+    ast match {
+      case a: AstNode                => visitfn(a.immediateChildren)
+      case t: Token                  => List()
+      case Some(x)                   => visitfn(x)
+      case xs @ (_ :: _)             => xs.flatMap(visitfn(_))
+      case Left(x)                   => visitfn(x)
+      case Right(x)                  => visitfn(x)
+      case (l, r)                    => visitfn(l) ::: visitfn(r)
+      case (x, y, z)                 => visitfn(x) ::: visitfn(y) ::: visitfn(z)
+      case true | false | Nil | None => List()
+    }
 }
 
 abstract class AbstractMethodChecker extends ScalariformChecker {
@@ -102,9 +102,7 @@ abstract class AbstractMethodChecker extends ScalariformChecker {
       t <- localvisit(ast.immediateChildren.head)
       f <- traverse(t)
       if matches(f)
-    } yield {
-      PositionError(f.position.get, params(f))
-    }
+    } yield PositionError(f.position.get, params(f))
 
     it.toList
   }
@@ -124,18 +122,20 @@ abstract class AbstractMethodChecker extends ScalariformChecker {
 
   protected def typename(t: Type): String = t.tokens.map(_.text).mkString
 
-  private def localvisit(ast: Any): ListType = ast match {
-    case t: TmplDef     => List(TmplClazz(t, Some(t.name.offset), localvisit(t.templateBodyOption)))
-    case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), localvisit(t.localDef)))
-    case t: Any         => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): ListType =
+    ast match {
+      case t: TmplDef     => List(TmplClazz(t, Some(t.name.offset), localvisit(t.templateBodyOption)))
+      case t: FunDefOrDcl => List(FunDefOrDclClazz(t, Some(t.nameToken.offset), localvisit(t.localDef)))
+      case t: Any         => visit(t, localvisit)
+    }
 
   protected def getParamTypes(pc: ParamClauses): List[String] =
     getParams(pc).map(p => typename(p.paramTypeOpt.get._2))
 
-  protected def matchFunDefOrDcl(t: BaseClazz[AstNode], fn: FunDefOrDcl => Boolean): Boolean = t match {
-    case f: FunDefOrDclClazz => fn(f.t); case _ => false
-  }
+  protected def matchFunDefOrDcl(t: BaseClazz[AstNode], fn: FunDefOrDcl => Boolean): Boolean =
+    t match {
+      case f: FunDefOrDclClazz => fn(f.t); case _ => false
+    }
 
   protected def methodMatch(name: String, paramTypesMatch: List[String] => Boolean)(t: FunDefOrDcl): Boolean =
     t.nameToken.text == name && paramTypesMatch(getParamTypes(t.paramClauses))

@@ -38,16 +38,12 @@ class SimplifyBooleanExpressionChecker extends ScalariformChecker {
     val it1 = for {
       List(left, right) <- ast.tokens.sliding(2);
       if (left.text == "!" && isBoolean(right))
-    } yield {
-      PositionError(left.offset)
-    }
+    } yield PositionError(left.offset)
 
     val it2 = for {
       t <- localvisit(ast);
       if (matches(t))
-    } yield {
-      PositionError(t.position.get)
-    }
+    } yield PositionError(t.position.get)
 
     (it1.toList ::: it2.toList).sortWith((a, b) => a.position < b.position)
   }
@@ -70,16 +66,17 @@ class SimplifyBooleanExpressionChecker extends ScalariformChecker {
   case class GeneralTokensClazz(_position: Option[Int], bool: Boolean)
       extends BaseClazz[GeneralTokens](_position)
 
-  private def localvisit(ast: Any): List[BaseClazz[AstNode]] = ast match {
-    case t: InfixExpr =>
-      List(InfixExprClazz(Some(t.firstToken.offset), t.infixId, localvisit(t.left), localvisit(t.right)))
-    case t: GeneralTokens => List(GeneralTokensClazz(Some(t.firstToken.offset), isBoolean(t)))
-    case t: Any           => visit(t, localvisit)
-  }
+  private def localvisit(ast: Any): List[BaseClazz[AstNode]] =
+    ast match {
+      case t: InfixExpr =>
+        List(InfixExprClazz(Some(t.firstToken.offset), t.infixId, localvisit(t.left), localvisit(t.right)))
+      case t: GeneralTokens => List(GeneralTokensClazz(Some(t.firstToken.offset), isBoolean(t)))
+      case t: Any           => visit(t, localvisit)
+    }
 
   private def boolean(expr: List[Clazz[_]]) =
     expr.size == 1 && expr(0)
-      .isInstanceOf[GeneralTokensClazz] && expr(0).asInstanceOf[GeneralTokensClazz].bool
+        .isInstanceOf[GeneralTokensClazz] && expr(0).asInstanceOf[GeneralTokensClazz].bool
 
   private def isBoolean(t: GeneralTokens): Boolean = t.tokens.size == 1 && isBoolean(t.tokens(0))
   private def isBoolean(t: Token): Boolean = Set(TRUE, FALSE).contains(t.tokenType)

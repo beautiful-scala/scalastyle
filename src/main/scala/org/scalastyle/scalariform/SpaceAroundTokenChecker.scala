@@ -30,11 +30,10 @@ trait SpaceAroundTokenChecker extends ScalariformChecker {
   val beforeToken: Boolean
 
   private def checkSpaces(left: Token, middle: Token, right: Token) =
-    if (beforeToken) {
+    if (beforeToken)
       charsBetweenTokens(left, middle) != (if (disallowSpace) 0 else 1)
-    } else {
+    else
       charsBetweenTokens(middle, right) != (if (disallowSpace) 0 else 1)
-    }
 
   def verify(ast: CompilationUnit): List[ScalastyleError] = {
     val tokens: Seq[TokenType] =
@@ -42,13 +41,11 @@ trait SpaceAroundTokenChecker extends ScalariformChecker {
     (for {
       l @ List(left, middle, right) <- ast.tokens.sliding(3)
       if (l.forall(x => x.tokenType != Tokens.NEWLINE && x.tokenType != Tokens.NEWLINES)
-      && tokens.contains(middle.tokenType)
-      && !(middle.associatedWhitespaceAndComments.containsNewline && beforeToken)
-      && (!right.associatedWhitespaceAndComments.containsNewline || beforeToken)
-      && checkSpaces(left, middle, right))
-    } yield {
-      PositionError(middle.offset, List(middle.text))
-    }).toList
+        && tokens.contains(middle.tokenType)
+        && !(middle.associatedWhitespaceAndComments.containsNewline && beforeToken)
+        && (!right.associatedWhitespaceAndComments.containsNewline || beforeToken)
+        && checkSpaces(left, middle, right))
+    } yield PositionError(middle.offset, List(middle.text))).toList
   }
 
 }
