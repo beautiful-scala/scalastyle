@@ -1,6 +1,6 @@
 <scalastyle commentFilter="enabled">
   <name>Scalastyle standard configuration</name>
-  <check class="org.scalastyle.file.FileTabChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.file.FileTabChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.file.FileLengthChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="maxFileLength">
@@ -32,7 +32,7 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.SpacesAfterPlusChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.SpacesAfterPlusChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.file.WhitespaceEndOfLineChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="ignoreWhitespaceLines">
@@ -40,7 +40,7 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.SpacesBeforePlusChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.SpacesBeforePlusChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.file.FileLineLengthChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="maxLineLength">
@@ -82,7 +82,7 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.EqualsHashCodeChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.IllegalImportsChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="illegalImports">
@@ -104,10 +104,10 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.NoWhitespaceBeforeRightBracketChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.ReturnChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.NoWhitespaceBeforeLeftBracketChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.NoWhitespaceAfterLeftBracketChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.NoWhitespaceBeforeRightBracketChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.ReturnChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.NullChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="allowNullChecks">
@@ -115,10 +115,10 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.NoCloneChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.NoFinalizeChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.CovariantEqualsChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.StructuralTypeChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.NoCloneChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.NoFinalizeChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.CovariantEqualsChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.StructuralTypeChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.file.RegexChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="regex">
@@ -146,8 +146,8 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.UppercaseLChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.UppercaseLChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.SimplifyBooleanExpressionChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.IfBraceChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="singleLineAllowed">
@@ -208,13 +208,13 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.file.NewLineAtEofChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.file.NoNewLineAtEofChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage" level="warning" enabled="true"/>
-  <check class="org.scalastyle.scalariform.WhileChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.VarFieldChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.VarLocalChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.RedundantIfChecker" level="warning" enabled="false"></check>
+  <check class="org.scalastyle.file.NewLineAtEofChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.file.NoNewLineAtEofChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.WhileChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.VarFieldChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.VarLocalChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.RedundantIfChecker" level="warning" enabled="false" />
   <check class="org.scalastyle.scalariform.TokenChecker" level="warning" enabled="false">
     <parameters>
       <parameter name="regex">
@@ -222,9 +222,9 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.DeprecatedJavaChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.OverrideJavaChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.EmptyClassChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.DeprecatedJavaChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.OverrideJavaChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.EmptyClassChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.ClassTypeParameterChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="regex">
@@ -232,9 +232,9 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.UnderscoreImportChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.LowercasePatternMatchChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.EmptyInterpolatedStringChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.UnderscoreImportChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.LowercasePatternMatchChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.EmptyInterpolatedStringChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.MultipleStringLiteralsChecker" level="warning" enabled="true">
     <parameters>
       <parameter name="allowed">
@@ -245,13 +245,13 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.ImportGroupingChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.BlockImportChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.ProcedureDeclarationChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.ForBraceChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.ForLoopChecker" level="warning" enabled="true"></check>
-  <check class="org.scalastyle.scalariform.SpaceAfterCommentStartChecker" level="warning" enabled="true"></check>
+  <check class="org.scalastyle.scalariform.ImportGroupingChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.NotImplementedErrorUsage" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.BlockImportChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.ProcedureDeclarationChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.ForBraceChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.ForLoopChecker" level="warning" enabled="true" />
+  <check class="org.scalastyle.scalariform.SpaceAfterCommentStartChecker" level="warning" enabled="true" />
   <check class="org.scalastyle.scalariform.ScalaDocChecker" level="warning" enabled="false">
     <parameters>
       <parameter name="ignoreRegex">
@@ -268,11 +268,11 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.DisallowSpaceAfterTokenChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" level="warning" enabled="false"></check>
-  <check class="org.scalastyle.scalariform.NonASCIICharacterChecker" level="warning" enabled="false"></check>
+  <check class="org.scalastyle.scalariform.DisallowSpaceAfterTokenChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.DisallowSpaceBeforeTokenChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.NonASCIICharacterChecker" level="warning" enabled="false" />
   <check class="org.scalastyle.file.IndentationChecker" level="warning" enabled="false">
     <parameters>
       <parameter name="tabSize">
@@ -307,5 +307,6 @@
       </parameter>
     </parameters>
   </check>
-  <check class="org.scalastyle.scalariform.CurliesImportChecker" level="warning" enabled="false"></check>
+  <check class="org.scalastyle.scalariform.CurliesImportChecker" level="warning" enabled="false" />
+  <check class="org.scalastyle.scalariform.ThrowChecker" level="warning" enabled="true" />
 </scalastyle>
