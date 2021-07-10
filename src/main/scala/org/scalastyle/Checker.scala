@@ -50,11 +50,14 @@ case class Lines(lines: Array[Line], lastChar: Char) {
     None
   }
 
+  def toLine(position: Int): Option[Int] =
+    findLineAndIndex(position) map { case (_, index) => index }
+
   def toLineColumn(position: Int): Option[LineColumn] =
     findLineAndIndex(position) map { case (line, index) => LineColumn(index, position - line.start) }
 
-  def toFullLineTuple(position: Int): Option[(LineColumn, LineColumn)] =
-    findLineAndIndex(position) map { case (line, index) => (LineColumn(index, 0), LineColumn(index + 1, 0)) }
+  def toFullLineTuple(position: Int): Option[(Int, Int)] =
+    findLineAndIndex(position) map { case (_, index) => (index, index + 1) }
 
 }
 

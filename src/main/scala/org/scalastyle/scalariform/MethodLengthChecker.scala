@@ -96,8 +96,8 @@ class MethodLengthChecker extends CombinedChecker {
       }
       count.get > maxLines
     } else {
-      val head = lines.toLineColumn(t.t.defToken.offset).get.line + 1
-      val tail = lines.toLineColumn(t.t.tokens.last.offset).get.line - 1
+      val head = lines.toLine(t.t.defToken.offset).get + 1
+      val tail = lines.toLine(t.t.tokens.last.offset).get - 1
       val emptyLines = if (ignoreEmpty) {
         lines.lines
           .slice(head - 1, tail) // extract actual method content

@@ -21,7 +21,7 @@ import scala.collection.mutable.ListBuffer
 
 import _root_.scalariform.lexer.Comment
 
-case class CommentFilter(id: Option[String], start: Option[LineColumn], end: Option[LineColumn])
+case class CommentFilter(id: Option[String], start: Option[Int], end: Option[Int])
 case class CommentInter(id: Option[String], position: Int, off: Boolean)
 
 object CommentFilter {
@@ -63,18 +63,18 @@ object CommentFilter {
 
     val list = ListBuffer[CommentFilter]()
     val inMap = new mutable.HashMap[Option[String], Boolean]()
-    val start = new mutable.HashMap[Option[String], Option[LineColumn]]()
+    val start = new mutable.HashMap[Option[String], Option[Int]]()
 
     it.foreach { ci =>
       (inMap.getOrElse(ci.id, false), ci.off) match {
         case (true, false) => // off then on, add a new CommentFilter
-          list += CommentFilter(ci.id, start.getOrElse(ci.id, None), lines.toLineColumn(ci.position))
+          list += CommentFilter(ci.id, start.getOrElse(ci.id, None), lines.toLine(ci.position))
           inMap.put(ci.id, false)
           start.remove(ci.id)
         case (true, true)   => // off then off, do nothing
         case (false, false) => // on then on, do nothing
         case (false, true) => // on then off, reset start
-          start.put(ci.id, lines.toLineColumn(ci.position))
+          start.put(ci.id, lines.toLine(ci.position))
           inMap.put(ci.id, true)
       }
     }
@@ -102,8 +102,8 @@ object CommentFilter {
     else {
       val m = se.lineNumber.get
       (cf.start, cf.end) match {
-        case (Some(s), Some(e)) => m >= s.line && m < e.line
-        case (Some(s), None)    => m >= s.line
+        case (Some(s), Some(e)) => m >= s && m < e
+        case (Some(s), None)    => m >= s
         case (None, Some(_))    => false // we just have an :off, filter doesn't apply
         case (None, None)       => false // this isn't possible, say it doesn't apply
       }
