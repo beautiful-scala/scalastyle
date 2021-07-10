@@ -74,9 +74,10 @@ class ScalastyleChecker[T <: FileSpec](classLoader: Option[ClassLoader] = None) 
   private[this] def privateCheckFiles(
     configuration: ScalastyleConfiguration,
     files: Iterable[T]
-  ): Seq[Message[T]] = {
-    val checks = configuration.checks.filter(_.enabled)
+  ): List[Message[T]] = {
     val checkerUtils = new CheckerUtils(classLoader)
+    val checks = checkerUtils.createChecks(configuration.checks.filter(_.enabled))
+
     StartWork() :: files
       .flatMap(file =>
         StartFile(file) :: checkerUtils.verifyFile(configuration, checks, file) :::
@@ -128,39 +129,41 @@ class CheckerUtils(classLoader: Option[ClassLoader] = None) {
 
   def verifySource[T <: FileSpec](
     configuration: ScalastyleConfiguration,
-    classes: List[ConfigurationChecker],
+    checks: => List[Checker[_]],
     file: T,
     source: String
-  ): List[Message[T]] = {
-    if (source.isEmpty)
+  ): List[Message[T]] =
+    if (source.isEmpty) {
       Nil
-    else {
-      val lines = Checker.parseLines(source)
+    } else {
       val scalariformAst = parseScalariform(source)
-
-      val commentFilters =
-        if (configuration.commentFilter)
-          CommentFilter.findCommentFilters(scalariformAst.comments, lines)
-        else
-          Nil
-
-      classes
-        .flatMap(cc => newInstance(cc.className, cc.level, cc.parameters, cc.customMessage, cc.customId))
-        .flatMap(c =>
-          c match {
-            case c: FileChecker        => c.verify(file, c.level, lines, lines)
-            case c: ScalariformChecker => c.verify(file, c.level, scalariformAst.ast, lines)
-            case c: CombinedChecker    => c.verify(file, c.level, CombinedAst(scalariformAst.ast, lines), lines)
-            case _                     => Nil
-          }
-        )
-        .filter(m => CommentFilter.filterApplies(m, commentFilters))
+      verifyAst(configuration, checks, file, scalariformAst, source)
     }
+
+  private def verifyAst[T <: FileSpec](
+    configuration: ScalastyleConfiguration,
+    checks: List[Checker[_]],
+    file: T,
+    ast: ScalariformAst,
+    source: String
+  ): List[Message[T]] = {
+    val lines = Checker.parseLines(source)
+    val commentFilters =
+      if (configuration.commentFilter) CommentFilter.findCommentFilters(ast.comments, lines) else Nil
+
+    checks
+      .flatMap {
+        case c: FileChecker        => c.verify(file, c.level, lines, lines)
+        case c: ScalariformChecker => c.verify(file, c.level, ast.ast, lines)
+        case c: CombinedChecker    => c.verify(file, c.level, CombinedAst(ast.ast, lines), lines)
+        case _                     => Nil
+      }
+      .filter(m => CommentFilter.filterApplies(m, commentFilters))
   }
 
   def verifyFile[T <: FileSpec](
     configuration: ScalastyleConfiguration,
-    classes: List[ConfigurationChecker],
+    checks: List[Checker[_]],
     file: T
   ): List[Message[T]] = {
     try {
@@ -168,7 +171,7 @@ class CheckerUtils(classLoader: Option[ClassLoader] = None) {
         case fs: RealFileSpec => readFile(fs.name, fs.encoding)
         case ss: SourceSpec   => ss.contents
       }
-      verifySource(configuration, classes, file, s)
+      verifySource(configuration, checks, file, s)
     } catch {
       case e: Exception =>
         List(
@@ -215,6 +218,12 @@ class CheckerUtils(classLoader: Option[ClassLoader] = None) {
       case Some(source) => source
     }
   }
+
+  def createChecks(configuration: ScalastyleConfiguration): List[Checker[_]] =
+    createChecks(configuration.checks.filter(_.enabled))
+
+  def createChecks(classes: List[ConfigurationChecker]): List[Checker[_]] =
+    classes.flatMap(cc => newInstance(cc.className, cc.level, cc.parameters, cc.customMessage, cc.customId))
 
   private def newInstance(
     name: String,
