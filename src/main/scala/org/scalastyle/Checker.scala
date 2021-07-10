@@ -109,9 +109,10 @@ object Checker {
     )
   }
 
-  def isObject(s: String): Boolean =
-    s == "java.lang.Object" || s == "Any" || s == "scala.Any" || s == "Object"
+  private val ObjectNames = Set("Any", "Object", "scala.Any", "java.lang.Object")
+  def isObject(s: String): Boolean = ObjectNames.contains(s)
   def isNotObject(s: String): Boolean = !isObject(s)
+
 }
 
 class CheckerUtils(classLoader: Option[ClassLoader] = None) {
