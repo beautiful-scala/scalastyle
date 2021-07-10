@@ -88,10 +88,23 @@ class F2() {
     4  (7)
     5  (8)
   }
+  def method3() = {
+    1
+    2
+    /** (3)
+     *  (4)
+     */ (5)
+    3   (6)
+    4   (7)
+  }
 }
 """
 
-    assertErrors(List(), source, Map("maxLength" -> "5", "ignoreComments" -> "true"))
+    assertErrors(
+      List(columnError(5, 6, List("6 > 5"))),
+      source,
+      Map("maxLength" -> "5", "ignoreComments" -> "true")
+    )
   }
 
   @Test def testIgnoreEmpty(): Unit = {
@@ -140,7 +153,11 @@ class F2() {
 }
 """
 
-    assertErrors(List(columnError(5, 6, List("4"))), source, Map("maxLength" -> "4", "ignoreEmpty" -> "true"))
+    assertErrors(
+      List(columnError(5, 6, List("5 > 4"))),
+      source,
+      Map("maxLength" -> "4", "ignoreEmpty" -> "true")
+    )
   }
 
   @Test def testIgnoreEmptyAndComments(): Unit = {
@@ -173,10 +190,29 @@ class F2() {
     5   (12)
 
   }
+  def method3() = {
+
+    1   (2)
+    2   (3)
+    //  (4)
+
+    3   (6)
+    4   (7)
+    /** (8)
+     *  (9)
+     */
+
+    5   (12)
+
+  }
 }
 """
 
-    assertErrors(List(), source, Map("maxLength" -> "5", "ignoreComments" -> "true", "ignoreEmpty" -> "true"))
+    assertErrors(
+      List(columnError(14, 6, List("6 > 5"))),
+      source,
+      Map("maxLength" -> "5", "ignoreComments" -> "true", "ignoreEmpty" -> "true")
+    )
   }
 
   @Test def testNotIgnoreComments(): Unit = {
@@ -205,7 +241,7 @@ class F2() {
 """
 
     assertErrors(
-      List(columnError(5, 6, List("5")), columnError(13, 6, List("5"))),
+      List(columnError(5, 6, List("6 > 5")), columnError(13, 6, List("6 > 5"))),
       source,
       Map("maxLength" -> "5", "ignoreComments" -> "false")
     )
@@ -214,6 +250,7 @@ class F2() {
   @Test def testIgnoreCommentsComplicated(): Unit = {
     val source = """
 class F3() {
+
   def method1() = {
     1 //
     (2) /*  */
@@ -222,9 +259,8 @@ class F3() {
     (4) /*
          *  (5)
          */ (6)
-    4 (7)
-    5 (8)
   }
+
   def method2() = {
     // /* (1)
     1     (2)
@@ -234,10 +270,34 @@ class F3() {
     5     (7)
     6     (8)
   }
+
+  def method3() = {
+    1 //
+    (2) /*  */
+    2
+    3
+    (4) /*
+         *  (5)
+         */ (6)
+    4 (7)
+  }
+
+  def method4() = {
+    // /* (1)
+    1     (2)
+    2     (3)
+    3     (5)
+    4     (6)
+    5     (7)
+  }
 }
 """
     assertErrors(
-      List(columnError(14, 6, List("5"))),
+      List(
+        columnError(4, 6, List("6 > 5")),
+        columnError(14, 6, List("6 > 5")),
+        columnError(24, 6, List("7 > 5"))
+      ),
       source,
       Map("maxLength" -> "5", "ignoreComments" -> "true")
     )

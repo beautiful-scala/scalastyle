@@ -16,12 +16,13 @@
 
 package org.scalastyle.scalariform
 
-import _root_.scalariform.parser.FunDefOrDcl
-import org.scalastyle.CombinedAst
-import org.scalastyle.CombinedChecker
-import org.scalastyle.Lines
-import org.scalastyle.PositionError
-import org.scalastyle.ScalastyleError
+// scalastyle:off underscore.import
+import scala.annotation.tailrec
+
+import _root_.scalariform.lexer._
+import _root_.scalariform.parser._
+
+import org.scalastyle._
 import org.scalastyle.scalariform.VisitorHelper.Clazz
 import org.scalastyle.scalariform.VisitorHelper.visit
 
@@ -38,75 +39,116 @@ class MethodLengthChecker extends CombinedChecker {
   case class FunDefOrDclClazz(t: FunDefOrDcl, position: Option[Int], subs: List[FunDefOrDclClazz])
       extends Clazz[FunDefOrDcl]()
 
+  @tailrec
+  private def getInnerExpr(expr: Expr): ExprElement = expr.contents match {
+    case List(subexpr) =>
+      subexpr match {
+        case t: Expr => getInnerExpr(t)
+        case t: Any  => t
+      }
+    case _ => expr
+  }
+
+  private def getNextToken(tokens: List[Token], ignoreComments: Boolean): Option[Token] =
+    tokens.tail.headOption match {
+      case x @ Some(tok) if !ignoreComments =>
+        tok.associatedWhitespaceAndComments.tokens.collectFirst { case t: Comment => t.token }.orElse(x)
+      case x: Any => x
+    }
+
+  private def getNextLastToken(tokens: List[Token], ignoreComments: Boolean): Option[Token] = {
+    val lastTwoTokens = tokens.drop(tokens.length - 2)
+    val lastComment = lastTwoTokens.lastOption match {
+      case Some(tok) if !ignoreComments =>
+        tok.associatedWhitespaceAndComments.tokens.reverse.find(_.isInstanceOf[Comment]).map(_.token)
+      case _ => None
+    }
+    lastComment.orElse(lastTwoTokens.headOption)
+  }
+
   def verify(ast: CombinedAst): List[ScalastyleError] = {
     val maxLength = getInt("maxLength", DefaultMaximumLength)
     val ignoreComments = getBoolean("ignoreComments", DefaultIgnoreComments)
     val ignoreEmpty = getBoolean("ignoreEmpty", DefaultIgnoreEmpty)
 
+    val lines = ast.lines
     val it = for {
       t <- localvisit(ast.compilationUnit.immediateChildren.head)
       f <- traverse(t)
-      if matches(f, ast.lines, maxLength, ignoreComments, ignoreEmpty)
-    } yield PositionError(t.position.get, List("" + maxLength))
+      body <- f.t.funBodyOpt match {
+        case Some(t: ProcFunBody) => Some(t.bodyBlock)
+        case Some(t: ExprFunBody) => Some(getInnerExpr(t.body))
+        case _                    => None
+      }
+      isBlock = body.isInstanceOf[BlockExpr]
+      tokens = body.tokens
+      headToken     <- if (isBlock) getNextToken(tokens, ignoreComments) else tokens.headOption
+      lastToken     <- if (isBlock) getNextLastToken(tokens, ignoreComments) else tokens.lastOption
+      begLineColumn <- lines.toLineColumn(headToken.offset)
+      endLineColumn <- lines.toLineColumn(lastToken.lastCharacterOffset)
+      numLines = methodLength(lines.lines, begLineColumn, endLineColumn, ignoreComments, ignoreEmpty)
+      if numLines > maxLength
+    } yield PositionError(t.position.get, List(s"$numLines > $maxLength"))
 
     it
   }
 
   private def traverse(t: FunDefOrDclClazz): List[FunDefOrDclClazz] = t :: t.subs.flatMap(traverse)
 
-  private def matches(
-    t: FunDefOrDclClazz,
-    lines: Lines,
-    maxLines: Int,
+  // scalastyle:off method.length cyclomatic.complexity
+  private def methodLength(
+    lines: Array[Line],
+    begLineColumn: LineColumn, // included, 1-based
+    endLineColumn: LineColumn, // included, 1-based
     ignoreComments: Boolean,
     ignoreEmpty: Boolean
-  ) = {
+  ): Int = {
+    val begLine = begLineColumn.line - 1 // 0-based, included
     if (ignoreComments) {
-      val count = for {
-        (_, start) <- lines.findLineAndIndex(t.t.defToken.offset)
-        (_, end)   <- lines.findLineAndIndex(t.t.tokens.last.offset)
-      } yield {
-        var count = 0
-        var multilineComment = false
-
-        // do not count deftoken line and end block line
-        for (i <- (start + 1) until end) {
-          val lineText =
-            lines.lines(i - 1).text.trim // zero based index, therefore "-1" when accessing the line
-          if (ignoreEmpty && lineText.isEmpty) {
-            // do nothing
-          } else if (lineText.startsWith(SinglelineComment)) {
-            // do nothing
-          } else {
-            if (lineText.contains(MultilineCommentsOpener))
-              // multiline comment start /*
-              // this line won't be counted even if
-              // there exists any token before /*
-              multilineComment = true
-            if (!multilineComment)
-              count = count + 1
-            if (lineText.contains(MultilineCommentsCloser))
-              // multiline comment end */
-              // this line won't be counted even if
-              // there exists any token after */
-              multilineComment = false
+      var count = 0
+      var multilineComment = false
+      val endLine = endLineColumn.line - 1 // 0-based, included
+      for {
+        i <- begLine to endLine
+        lineText = lines(i).text
+        slcIndex = lineText.indexOf(SinglelineComment)
+        if !(slcIndex == 0 || ignoreEmpty && lineText.isEmpty)
+      } {
+        val begIndex = if (i == begLine) begLineColumn.column else 0
+        val endIndex = {
+          val idx = if (slcIndex < 0) lineText.length else slcIndex
+          if (i == endLine) math.min(endLineColumn.column + 1, idx) else idx
+        }
+        @tailrec
+        def iter(index: Int, res: Boolean = false): Boolean = {
+          val delim = if (multilineComment) MultilineCommentsCloser else MultilineCommentsOpener
+          val nextIndex = {
+            val idx = lineText.indexOf(delim, index)
+            if (idx < 0 || idx > endIndex) endIndex else idx
+          }
+          val nextRes = res || !multilineComment && {
+            val idx = lineText.indexWhere(!Character.isSpaceChar(_), index)
+            idx >= 0 && idx < nextIndex
+          }
+          if (nextIndex == endIndex) { nextRes }
+          else {
+            multilineComment = !multilineComment
+            iter(nextIndex + delim.length, nextRes)
           }
         }
-        count
+        if (iter(begIndex)) count += 1
       }
-      count.get > maxLines
+      count
     } else {
-      val head = lines.toLine(t.t.defToken.offset).get + 1
-      val tail = lines.toLine(t.t.tokens.last.offset).get - 1
-      val emptyLines = if (ignoreEmpty) {
-        lines.lines
-          .slice(head - 1, tail) // extract actual method content
-          .count(_.text.isEmpty) // count empty lines
-      } else
-        0
-      (tail - head + 1) - emptyLines > maxLines
+      val endLine = endLineColumn.line // 0-based, excluded
+      if (ignoreEmpty) {
+        lines.view.slice(begLine, endLine).count(_.text.nonEmpty)
+      } else {
+        endLine - begLine
+      }
     }
   }
+  // scalastyle:on method.length
 
   private def localvisit(ast: Any): List[FunDefOrDclClazz] =
     ast match {
