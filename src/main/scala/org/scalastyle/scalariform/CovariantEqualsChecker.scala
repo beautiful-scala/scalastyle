@@ -17,17 +17,16 @@
 package org.scalastyle.scalariform
 
 import org.scalastyle.Checker
+
 import scalariform.parser.AstNode
 import scalariform.parser.FunDefOrDcl
 
 class CovariantEqualsChecker extends AbstractMethodChecker {
   val errorKey = "covariant.equals"
 
-  def matches(t: BaseClazz[AstNode]): Boolean = {
-    val equalsObject = t.subs.exists(matchFunDefOrDcl(_, isEqualsObject))
-    val equalsOther = t.subs.exists(matchFunDefOrDcl(_, isEqualsOther))
-
-    !equalsObject && equalsOther
+  def matches(t: BaseClazz[AstNode]): Option[Int] = {
+    val equalsObject = matchFunDefOrDcl(t, isEqualsObject).isEmpty
+    if (equalsObject) matchFunDefOrDcl(t, isEqualsOther) else None
   }
 
   private def isEqualsOther(t: FunDefOrDcl): Boolean =

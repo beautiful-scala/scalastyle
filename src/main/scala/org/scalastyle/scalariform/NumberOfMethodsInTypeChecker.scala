@@ -25,8 +25,8 @@ class NumberOfMethodsInTypeChecker extends AbstractMethodChecker {
   override def params(t: BaseClazz[AstNode]): List[String] =
     List("" + getInt("maxMethods", DefaultMaxMethods))
 
-  def matches(t: BaseClazz[AstNode]): Boolean = {
+  def matches(t: BaseClazz[AstNode]): Option[Int] = {
     val maxMethods = getInt("maxMethods", DefaultMaxMethods)
-    t.subs.size > maxMethods
+    if (t.subs.size > maxMethods) t.position else None
   }
 }
