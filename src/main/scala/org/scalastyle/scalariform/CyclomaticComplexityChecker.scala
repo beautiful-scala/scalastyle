@@ -18,7 +18,6 @@ package org.scalastyle.scalariform
 
 import _root_.scalariform.lexer.Token
 import _root_.scalariform.lexer.Tokens.CASE
-import _root_.scalariform.lexer.Tokens.DO
 import _root_.scalariform.lexer.Tokens.FOR
 import _root_.scalariform.lexer.Tokens.IF
 import _root_.scalariform.lexer.Tokens.MATCH
@@ -39,7 +38,7 @@ class CyclomaticComplexityChecker extends CombinedChecker {
   val DefaultCountCases = true
   private lazy val maximum = getInt("maximum", DefaultMaximum)
   private lazy val countCases = getBoolean("countCases", DefaultCountCases)
-  private val defaultTokens = Set(IF, WHILE, DO, FOR)
+  private val defaultTokens = Set(IF, WHILE, FOR)
 
   case class FunDefOrDclClazz(t: FunDefOrDcl, position: Option[Int], subs: List[FunDefOrDclClazz])
       extends Clazz[FunDefOrDcl]()

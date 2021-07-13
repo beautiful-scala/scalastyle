@@ -39,6 +39,7 @@ class Foobar {
       5 match {
         case 4 =>
         case 5 =>
+        case 6 =>
         case _ =>
       }
     } else {
@@ -49,7 +50,6 @@ class Foobar {
       3
     }
   }
-
   def barbar(i: Int): Int = {
     if (i == 1) {
       5
@@ -65,6 +65,7 @@ class Foobar {
       while (f > 0) {}
       do {} while (f > 0)
       for (t <- List()) {}
+      for (t <- List()) yield {}
       3
     }
   }
