@@ -82,7 +82,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
         assertErrors(Nil, source format doc)
         assertErrors(List(lineError(1, List(Missing))), source format "")
         assertErrors(
-          List(lineError(5, List(missingParam("a"))), lineError(5, List(missingParam("b")))),
+          List(lineError(2, List(missingParam("a"))), lineError(2, List(missingParam("b")))),
           source format missingParamDoc
         )
     }
@@ -129,7 +129,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
     List(traitSource, classSource, caseClassSource).foreach { source =>
       assertErrors(Nil, source format doc)
       assertErrors(List(lineError(1, List(Missing))), source format "")
-      assertErrors(List(lineError(5, List(MalformedTypeParams))), source format malformedDoc)
+      assertErrors(List(lineError(2, List(MalformedTypeParams))), source format malformedDoc)
     }
   }
 
@@ -155,7 +155,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     assertErrors(Nil, doc + source)
     assertErrors(List(lineError(1, List(Missing))), source)
-    assertErrors(List(lineError(5, List(MalformedTypeParams))), malformedDoc + source)
+    assertErrors(List(lineError(2, List(MalformedTypeParams))), malformedDoc + source)
   }
 
   @Test def publicMethodWithEverything(): Unit = {
@@ -246,15 +246,15 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
         assertErrors(Nil, source format doc(false))
         assertErrors(if (checked) List(lineError(6, List(Missing))) else Nil, source format "")
         assertErrors(
-          if (checked) List(lineError(15, List(missingParam("b")))) else Nil,
+          if (checked) List(lineError(7, List(missingParam("b")))) else Nil,
           source format missingParamsDoc(false)
         )
         assertErrors(
-          if (checked) List(lineError(15, List(MalformedTypeParams))) else Nil,
+          if (checked) List(lineError(7, List(MalformedTypeParams))) else Nil,
           source format missingTypeParamsDoc(false)
         )
         assertErrors(
-          if (checked) List(lineError(15, List(MalformedReturn))) else Nil,
+          if (checked) List(lineError(7, List(MalformedReturn))) else Nil,
           source format missingReturnDoc
         )
       }
@@ -263,11 +263,11 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
         assertErrors(Nil, source format doc(false))
         assertErrors(if (checked) List(lineError(6, List(Missing))) else Nil, source format "")
         assertErrors(
-          if (checked) List(lineError(14, List(missingParam("b")))) else Nil,
+          if (checked) List(lineError(7, List(missingParam("b")))) else Nil,
           source format missingParamsDoc(true)
         )
         assertErrors(
-          if (checked) List(lineError(14, List(MalformedTypeParams))) else Nil,
+          if (checked) List(lineError(7, List(MalformedTypeParams))) else Nil,
           source format missingTypeParamsDoc(true)
         )
       }
@@ -317,7 +317,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
         |}
       """.stripMargin
 
-    assertErrors(List(lineError(22, List(emptyParam("c")))), source)
+    assertErrors(List(lineError(7, List(emptyParam("c")))), source)
   }
 
   @Test def valsVarsAndTypes(): Unit = {
@@ -460,8 +460,8 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
    class c"""
 
     assertErrors(List.empty, source)
-    assertErrors(List(lineError(5, List(InvalidDocStyle))), source, Map("indentStyle" -> "scaladoc"))
-    assertErrors(List(lineError(5, List(InvalidDocStyle))), source, Map("indentStyle" -> "javadoc"))
+    assertErrors(List(lineError(2, List(InvalidDocStyle))), source, Map("indentStyle" -> "scaladoc"))
+    assertErrors(List(lineError(2, List(InvalidDocStyle))), source, Map("indentStyle" -> "javadoc"))
   }
 
   @Test def indentStyleScaladoc(): Unit = {
@@ -473,7 +473,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     assertErrors(List.empty, source)
     assertErrors(List.empty, source, Map("indentStyle" -> "scaladoc"))
-    assertErrors(List(lineError(5, List(InvalidDocStyle))), source, Map("indentStyle" -> "javadoc"))
+    assertErrors(List(lineError(2, List(InvalidDocStyle))), source, Map("indentStyle" -> "javadoc"))
   }
 
   @Test def indentStyleJavadoc(): Unit = {
@@ -484,7 +484,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
    class c"""
 
     assertErrors(List.empty, source)
-    assertErrors(List(lineError(5, List(InvalidDocStyle))), source, Map("indentStyle" -> "scaladoc"))
+    assertErrors(List(lineError(2, List(InvalidDocStyle))), source, Map("indentStyle" -> "scaladoc"))
     assertErrors(List.empty, source, Map("indentStyle" -> "javadoc"))
   }
 

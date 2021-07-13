@@ -49,7 +49,7 @@ class CyclomaticComplexityChecker extends CombinedChecker {
       f <- traverse(t)
       value = matches(f, ast.lines, maximum)
       if value > maximum
-    } yield PositionError(t.position.get, List("" + value, "" + maximum))
+    } yield PositionError(f.position.get, List("" + value, "" + maximum))
 
     it
   }

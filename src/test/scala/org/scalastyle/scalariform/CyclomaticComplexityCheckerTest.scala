@@ -119,7 +119,7 @@ class Foobar {
 """
 
     assertErrors(
-      List(columnError(5, 6, List("4", "3")), columnError(21, 6, List("4", "3"))),
+      List(columnError(5, 6, List("4", "3")), columnError(23, 8, List("4", "3"))),
       source,
       Map("maximum" -> "3")
     )

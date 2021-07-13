@@ -313,7 +313,7 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
     val expected = List(
       columnError(
         3,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("foobar.Bar", "foobar.subpackage.Foo")
       )
@@ -329,7 +329,7 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
       """.stripMargin
 
     val expected = List(
-      columnError(3, 21, errorKey = errorKey("wrongOrderInSelector"), args = List("Files", "Paths"))
+      columnError(3, 22, errorKey = errorKey("wrongOrderInSelector"), args = List("Files", "Paths"))
     )
 
     assertErrors(expected, source, params = params)
@@ -361,22 +361,22 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
       """.stripMargin
 
     val expected = List(
-      columnError(5, 20, errorKey = errorKey("wrongOrderInSelector"), args = List("Cipher", "Mac")),
-      columnError(6, 0, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang.", "javax.crypto.")),
-      columnError(6, 17, errorKey = errorKey("wrongOrderInSelector"), args = List("Boolean", "Long")),
-      columnError(7, 0, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang._", "java.lang.")),
-      columnError(9, 0, errorKey = errorKey("noEmptyLine")),
-      columnError(10, 0, errorKey = errorKey("missingEmptyLine"), args = List("java", "scala")),
+      columnError(5, 21, errorKey = errorKey("wrongOrderInSelector"), args = List("Cipher", "Mac")),
+      columnError(6, 7, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang.", "javax.crypto.")),
+      columnError(6, 18, errorKey = errorKey("wrongOrderInSelector"), args = List("Boolean", "Long")),
+      columnError(7, 7, errorKey = errorKey("wrongOrderInGroup"), args = List("java.lang._", "java.lang.")),
+      columnError(9, 7, errorKey = errorKey("noEmptyLine")),
+      columnError(10, 7, errorKey = errorKey("missingEmptyLine"), args = List("java", "scala")),
       columnError(
         14,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project1.MyClass", "org.apache.Foo")
       ),
-      columnError(18, 0, errorKey = errorKey("tooManyEmptyLines"), args = List("2", "others", "project2")),
+      columnError(18, 7, errorKey = errorKey("tooManyEmptyLines"), args = List("2", "others", "project2")),
       columnError(
         19,
-        0,
+        7,
         errorKey = errorKey("wrongGroup"),
         args = List("javax.swing.JTree", "java", "project2")
       )
@@ -418,55 +418,55 @@ class ImportOrderCheckerTest extends AssertionsForJUnit with CheckerTest {
       """.stripMargin
 
     val expected = List(
-      columnError(5, 20, errorKey = errorKey("wrongOrderInSelector"), args = List("Cipher", "Mac")),
+      columnError(5, 21, errorKey = errorKey("wrongOrderInSelector"), args = List("Cipher", "Mac")),
       columnError(
         6,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("java.lang.{Long=>JLong,Boolean=>JBoolean}", "javax.crypto.{Mac,Cipher}")
       ),
-      columnError(6, 17, errorKey = errorKey("wrongOrderInSelector"), args = List("Boolean", "Long")),
+      columnError(6, 18, errorKey = errorKey("wrongOrderInSelector"), args = List("Boolean", "Long")),
       columnError(
         7,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("java.lang._", "java.lang.{Long=>JLong,Boolean=>JBoolean}")
       ),
-      columnError(9, 0, errorKey = errorKey("noEmptyLine")),
-      columnError(10, 0, errorKey = errorKey("missingEmptyLine"), args = List("java", "scala")),
+      columnError(9, 7, errorKey = errorKey("noEmptyLine")),
+      columnError(10, 7, errorKey = errorKey("missingEmptyLine"), args = List("java", "scala")),
       columnError(
         14,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project1.MyClass", "org.apache.Foo")
       ),
       columnError(
         16,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project3.SomeClass", "my.org.project3.Someclass")
       ),
       columnError(
         20,
-        0,
+        7,
         errorKey = errorKey("wrongGroup"),
         args = List("javax.swing.JTree", "java", "project2")
       ),
       columnError(
         22,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project2.xyz.Abc", "my.org.project2.xyz.{Aaa=>Bba}")
       ),
       columnError(
         24,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project2.xyz.{Aab=>Bbb}", "my.org.project2.xyz.{Aac=>Bbc}")
       ),
       columnError(
         25,
-        0,
+        7,
         errorKey = errorKey("wrongOrderInGroup"),
         args = List("my.org.project2.xyz._", "my.org.project2.xyz.{Aab=>Bbb}")
       )

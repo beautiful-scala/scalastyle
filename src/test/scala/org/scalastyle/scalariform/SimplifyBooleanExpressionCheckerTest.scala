@@ -38,7 +38,7 @@ object Foobar {
   val foo04 = (b != false)
 }"""
 
-    assertErrors(List(columnError(6, 15), columnError(7, 15), columnError(8, 15), columnError(9, 15)), source)
+    assertErrors(List(columnError(6, 20), columnError(7, 20), columnError(8, 20), columnError(9, 20)), source)
   }
   @Test def testErrors(): Unit = {
     val source = """
@@ -51,7 +51,7 @@ object Foobar {
   val foo03 = !true
 }"""
 
-    assertErrors(List(columnError(6, 15), columnError(7, 14), columnError(8, 14)), source)
+    assertErrors(List(columnError(6, 20), columnError(7, 15), columnError(8, 15)), source)
   }
 
   @Test def testErrors2(): Unit = {
@@ -66,7 +66,7 @@ object Foobar {
   val foo07 = false && b
 }"""
 
-    assertErrors(List(columnError(6, 14), columnError(7, 14), columnError(8, 14), columnError(9, 14)), source)
+    assertErrors(List(columnError(6, 19), columnError(7, 14), columnError(8, 19), columnError(9, 14)), source)
   }
 
   @Test def testErrors3(): Unit = {
@@ -81,7 +81,7 @@ object Foobar {
   val foo11 = false || b
 }"""
 
-    assertErrors(List(columnError(6, 14), columnError(7, 14), columnError(8, 14), columnError(9, 14)), source)
+    assertErrors(List(columnError(6, 19), columnError(7, 14), columnError(8, 19), columnError(9, 14)), source)
   }
 
   @Test def testOK(): Unit = {
@@ -95,6 +95,6 @@ object Foobar {
   val foo14 = b && (true)
 }"""
 
-    assertErrors(List(columnError(8, 14)), source)
+    assertErrors(List(columnError(8, 20)), source)
   }
 }
