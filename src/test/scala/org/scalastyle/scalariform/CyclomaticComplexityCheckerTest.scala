@@ -64,7 +64,7 @@ class Foobar {
       var f = 0
       while (f > 0) {}
       do {} while (f > 0)
-      for (t <- List())
+      for (t <- List()) {}
       3
     }
   }

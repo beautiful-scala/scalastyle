@@ -328,10 +328,10 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
           | * Top-level doc
           | */
         """.stripMargin
-      def source(container: String) =
+      def source(container: String, args: String = "") =
         s"""
            |$tlDoc
-           |$container Foo {
+           |$container Foo $args {
            |  %s${what}
            |}
         """.stripMargin
@@ -342,7 +342,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
           | */
         """.stripMargin
 
-      List(source("class"), source("case class"), source("object ")).foreach { source =>
+      List(source("class"), source("case class", "()"), source("object ")).foreach { source =>
         assertErrors(Nil, source format doc)
         assertErrors(if (checked) List(lineError(8, List(Missing))) else Nil, source format "")
       }
@@ -421,7 +421,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     val cases = Seq(
       Seq("val a = 1", "var a = 2") -> "PatDefOrDcl",
-      Seq("class A", "case class A", "object A", "trait A") -> "TmplDef",
+      Seq("class A", "case class A()", "object A", "trait A") -> "TmplDef",
       Seq("type B = A") -> "TypeDefOrDcl",
       Seq("def A(): Unit") -> "FunDefOrDcl"
     )
@@ -429,7 +429,11 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
     for {
       (declerations, ignoreTokenType) <- cases
       decleration                     <- declerations
-    } assertErrors(Nil, decleration, Map("ignoreTokenTypes" -> ignoreTokenType))
+    } assertErrors(
+      Nil,
+      s"/** */ object a { $decleration }",
+      Map("ignoreTokenTypes" -> ignoreTokenType)
+    )
   }
 
   @Test def ignoreOverridden(): Unit = {

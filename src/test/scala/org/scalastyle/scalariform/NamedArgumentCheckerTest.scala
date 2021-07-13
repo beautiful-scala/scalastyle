@@ -9,55 +9,59 @@ class NamedArgumentCheckerTest extends AssertionsForJUnit with CheckerTest {
   val classUnderTest = classOf[NamedArgumentChecker]
 
   @Test def testDefault(): Unit = {
-    val source = """b(b = true)
+    val source = """object a {
+                   |b(b = true)
                    |i(i = 1)
                    |l(l = 1L)
                    |f(f = 1.2)
                    |c(c = 'a')
                    |n(n = null)
-                 """.stripMargin
-    val badSource = """b(true)
+                 }""".stripMargin
+    val badSource = """object a {
+                      |b(true)
                       |i(1)
                       |l(1L)
                       |f(1.2)
                       |c('a')
                       |n(null)
-                    """.stripMargin
+                    }""".stripMargin
 
     assertErrors(List.empty, source)
     assertErrors(
       List(
-        columnError(1, 2),
         columnError(2, 2),
         columnError(3, 2),
         columnError(4, 2),
         columnError(5, 2),
-        columnError(6, 2)
+        columnError(6, 2),
+        columnError(7, 2)
       ),
       badSource
     )
   }
 
   @Test def testString(): Unit = {
-    val source = """s1(s = "abc")
+    val source = """object a {
+                   |s1(s = "abc")
                    |s2(s = s"a$bc")
-                 """.stripMargin
-    val badSource = """s1("abc")
+                 }""".stripMargin
+    val badSource = """object a {
+                      |s1("abc")
                       |s2(s"a${b}c")
-                    """.stripMargin
+                    }""".stripMargin
 
     assertErrors(List.empty, source, Map("checkString" -> "true"))
-    assertErrors(List(columnError(1, 3), columnError(2, 3)), badSource, Map("checkString" -> "true"))
+    assertErrors(List(columnError(2, 3), columnError(3, 3)), badSource, Map("checkString" -> "true"))
   }
 
   @Test def testIgnore(): Unit = {
-    val source1 = """setF(1)"""
-    val source2 = """f(1)"""
+    val source1 = """object a { setF(1) }"""
+    val source2 = """object a { f(1) }"""
 
     assertErrors(List.empty, source1)
-    assertErrors(List(columnError(1, 2)), source2)
+    assertErrors(List(columnError(1, 13)), source2)
 
-    assertErrors(List(columnError(1, 5)), source1, Map("ignoreMethod" -> "^f$"))
+    assertErrors(List(columnError(1, 16)), source1, Map("ignoreMethod" -> "^f$"))
     assertErrors(List.empty, source2, Map("ignoreMethod" -> "^f$"))
   }
 
