@@ -121,6 +121,8 @@ class ScalaDocChecker extends CombinedChecker {
   private def indentErrors(line: Int, style: DocIndentStyle)(scalaDoc: ScalaDoc): List[ScalastyleError] =
     if (style == AnyDocStyle || style == scalaDoc.indentStyle)
       Nil
+    else if (SingleLineStyle == scalaDoc.indentStyle)
+      Nil
     else
       List(LineError(line, List(InvalidDocStyle)))
 
@@ -407,6 +409,7 @@ object ScalaDocChecker {
   object ScalaDocStyle extends DocIndentStyle
   object JavaDocStyle extends DocIndentStyle
   object AnyDocStyle extends DocIndentStyle
+  object SingleLineStyle extends DocIndentStyle
   object UndefinedDocStyle extends DocIndentStyle
 
   def getStyleFrom(name: String): DocIndentStyle =
@@ -458,15 +461,14 @@ object ScalaDocChecker {
               style match {
                 case ScalaDocStyle | JavaDocStyle =>
                   if (lineStyle == style) getStyle(tail, style) else AnyDocStyle
-                case AnyDocStyle =>
-                  AnyDocStyle
                 case UndefinedDocStyle =>
                   getStyle(tail, lineStyle)
+                case _ => style
               }
             case Nil => if (style == UndefinedDocStyle) AnyDocStyle else style
           }
 
-        getStyle(strings.tail, UndefinedDocStyle)
+        if (strings.lengthCompare(1) <= 0) SingleLineStyle else getStyle(strings.tail, UndefinedDocStyle)
       }
 
       val lines = strings.flatMap(x =>

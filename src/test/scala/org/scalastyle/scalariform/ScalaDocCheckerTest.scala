@@ -496,6 +496,7 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
         | }
       """.stripMargin
     assertErrors(List.empty, sourceScalaDoc, Map("indentStyle" -> "scaladoc"))
+    assertErrors(List.empty, s"/** */ $sourceScalaDoc", Map("indentStyle" -> "scaladoc"))
 
     val sourceJavaDoc =
       """
@@ -508,5 +509,6 @@ class ScalaDocCheckerTest extends AssertionsForJUnit with CheckerTest {
       """.stripMargin
 
     assertErrors(List.empty, sourceJavaDoc, Map("indentStyle" -> "javadoc"))
+    assertErrors(List.empty, s"/** */ $sourceJavaDoc", Map("indentStyle" -> "javadoc"))
   }
 }
