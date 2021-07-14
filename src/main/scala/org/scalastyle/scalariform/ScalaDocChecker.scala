@@ -263,7 +263,8 @@ class ScalaDocChecker extends CombinedChecker {
         // pick the ScalaDoc "attached" to the modifier, which actually means
         // ScalaDoc of the following member
         val scalaDocs = for {
-          token   <- t.tokens
+          tree    <- t.annotations ++ t.modifiers
+          token   <- tree.tokens
           comment <- token.associatedWhitespaceAndComments
           if comment.token.isScalaDocComment
         } yield comment
