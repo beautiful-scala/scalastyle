@@ -22,11 +22,15 @@ import scalariform.parser.FunDefOrDcl
 class EqualsHashCodeChecker extends AbstractMethodChecker {
   val errorKey = "equals.hash.code"
 
-  def matches(t: BaseClazz[AstNode]): Boolean = {
-    val hc = t.subs.exists(matchFunDefOrDcl(_, isHashCode))
-    val eq = t.subs.exists(matchFunDefOrDcl(_, isEqualsObject))
+  def matches(t: BaseClazz[AstNode]): Option[Int] = {
+    val hc = matchFunDefOrDcl(t, isHashCode)
+    val eq = matchFunDefOrDcl(t, isEqualsObject)
 
-    (hc && !eq) || (!hc && eq)
+    if (hc.isDefined) {
+      if (eq.isDefined) None else hc
+    } else {
+      if (eq.isDefined) eq else None
+    }
   }
 
   private def isHashCode(t: FunDefOrDcl): Boolean = methodMatch("hashCode", noParameter() _)(t)

@@ -24,7 +24,6 @@ import org.scalatestplus.junit.AssertionsForJUnit
 
 class TodoCommentCheckerTest extends AssertionsForJUnit with CheckerTest {
   val key = "todo.comment"
-  val text = "TODO|FIXME"
   val classUnderTest = classOf[TodoCommentChecker]
 
   @Test def testSourceWithoutTodoComments(): Unit = {
@@ -93,15 +92,15 @@ class TodoCommentCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     assertErrors(
       List(
-        columnError(5, 2, List(text)),
-        columnError(9, 4, List(text)),
-        columnError(12, 2, List(text)),
-        columnError(15, 24, List(text)),
-        columnError(17, 29, List(text)),
-        columnError(19, 22, List(text)),
-        columnError(21, 2, List(text)),
-        columnError(26, 3, List(text)),
-        columnError(27, 3, List(text))
+        columnError(5, 2, List("TODO")),
+        columnError(9, 4, List("Todo")),
+        columnError(12, 2, List("ToDo")),
+        columnError(15, 24, List("todo")),
+        columnError(17, 29, List("TODO")),
+        columnError(19, 22, List("TODO")),
+        columnError(21, 2, List("TODO")),
+        columnError(26, 3, List("TODO")),
+        columnError(27, 3, List("TODO"))
       ),
       source
     )
@@ -170,15 +169,15 @@ class TodoCommentCheckerTest extends AssertionsForJUnit with CheckerTest {
 
     assertErrors(
       List(
-        columnError(5, 2, List(text)),
-        columnError(9, 4, List(text)),
-        columnError(12, 2, List(text)),
-        columnError(15, 24, List(text)),
-        columnError(17, 29, List(text)),
-        columnError(19, 22, List(text)),
-        columnError(21, 2, List(text)),
-        columnError(26, 3, List(text)),
-        columnError(27, 3, List(text))
+        columnError(5, 2, List("FIXME")),
+        columnError(9, 4, List("Fixme")),
+        columnError(12, 2, List("FixMe")),
+        columnError(15, 24, List("fixme")),
+        columnError(17, 29, List("FIXME")),
+        columnError(19, 22, List("FIXME")),
+        columnError(21, 2, List("FIXME")),
+        columnError(26, 3, List("FIXME")),
+        columnError(27, 3, List("FIXME"))
       ),
       source
     )
@@ -206,16 +205,15 @@ class TodoCommentCheckerTest extends AssertionsForJUnit with CheckerTest {
         |}
       """.stripMargin
 
-    val words = "fixme|afaire"
     assertErrors(
       List(
-        columnError(5, 2, List(words)),
-        columnError(9, 4, List(words)),
-        columnError(12, 2, List(words)),
-        columnError(17, 3, List(words))
+        columnError(5, 2, List("AFAIRE")),
+        columnError(9, 4, List("afaire")),
+        columnError(12, 2, List("AFaire")),
+        columnError(17, 3, List("FIXME"))
       ),
       source,
-      params = Map("words" -> words)
+      params = Map("words" -> "fixme|afaire")
     )
   }
 }

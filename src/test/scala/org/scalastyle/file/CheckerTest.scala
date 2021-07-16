@@ -48,9 +48,12 @@ trait CheckerTest {
       ConfigurationChecker(classUnderTest.getName(), WarningLevel, true, params, customMessage, customId)
     )
     val configuration = ScalastyleConfiguration("", commentFilter, classes)
+    val utils = new CheckerUtils()
+    val checks = utils.createChecks(configuration)
+    def sort(vals: Seq[Message[_]]): String = vals.map(_.toString).sorted.mkString("\n")
     assertEquals(
-      expected.mkString("\n"),
-      new CheckerUtils().verifySource(configuration, classes, NullFileSpec, source).mkString("\n")
+      sort(expected),
+      sort(utils.verifySource(configuration, checks, NullFileSpec, source))
     )
   }
 

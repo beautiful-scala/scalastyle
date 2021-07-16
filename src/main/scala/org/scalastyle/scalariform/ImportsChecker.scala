@@ -213,13 +213,13 @@ class ImportOrderChecker extends ScalariformChecker {
     val CompilationUnit(statements, _) = ast
     statements.immediateChildren.flatMap { n =>
       val result = n match {
-        case ImportClause(_, BlockImportExpr(prefix, selectors), _, _) =>
+        case ImportClause(_, e @ BlockImportExpr(prefix, selectors), _, _) =>
           val text = exprToText(prefix.contents, if (lexicographic) selectors.tokens else Nil)
-          checkImport(text, n.firstToken.offset) ++ checkSelectors(selectors)
+          checkImport(text, e.firstToken.offset) ++ checkSelectors(selectors)
 
-        case ImportClause(_, Expr(contents), _, _) =>
+        case ImportClause(_, e @ Expr(contents), _, _) =>
           val text = exprToText(contents)
-          checkImport(text, n.firstToken.offset)
+          checkImport(text, e.firstToken.offset)
 
         case _ =>
           Nil
@@ -281,13 +281,13 @@ class ImportOrderChecker extends ScalariformChecker {
     val ImportSelectors(_, first, others, _) = selectors
 
     val errors = new ListBuffer[ScalastyleError]()
-    val names = Seq(first.contents.head.tokens.head.text) ++
-      others.map(_._2.contents.head.tokens.head.text)
+    val names = Seq(first.contents.head.tokens.head) ++
+      others.map(_._2.contents.head.tokens.head)
 
     if (names.size > 1) {
       names.sliding(2).foreach { case Seq(left, right) =>
-        if (compareNames(left, right, isImport = false) > 0)
-          errors += newError(selectors.firstToken.offset, "wrongOrderInSelector", right, left)
+        if (compareNames(left.text, right.text, isImport = false) > 0)
+          errors += newError(left.offset, "wrongOrderInSelector", right.text, left.text)
       }
     }
 

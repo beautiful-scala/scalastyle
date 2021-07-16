@@ -30,7 +30,7 @@ class NoWhitespaceBeforeLeftBracketChecker extends ScalariformChecker {
     val it = for {
       List(left, right) <- ast.tokens.sliding(2)
       if right.tokenType == LBRACKET && charsBetweenTokens(left, right) > 0
-    } yield PositionError(left.offset)
+    } yield PositionError(right.offset)
 
     it.toList
   }

@@ -101,18 +101,18 @@ abstract class AbstractMethodChecker extends ScalariformChecker {
     val it = for {
       t <- localvisit(ast.immediateChildren.head)
       f <- traverse(t)
-      if matches(f)
-    } yield PositionError(f.position.get, params(f))
+      p <- matches(f)
+    } yield PositionError(p, params(f))
 
-    it.toList
+    it
   }
 
   private def traverse(t: BaseClazz[AstNode]): ListType = {
     val l = t.subs.flatMap(traverse)
-    if (matches(t)) t :: l else l
+    if (matches(t).isDefined) t :: l else l
   }
 
-  def matches(t: BaseClazz[AstNode]): Boolean
+  def matches(t: BaseClazz[AstNode]): Option[Int]
 
   protected def getParams(p: ParamClauses): List[Param] =
     p.paramClausesAndNewlines
@@ -132,10 +132,8 @@ abstract class AbstractMethodChecker extends ScalariformChecker {
   protected def getParamTypes(pc: ParamClauses): List[String] =
     getParams(pc).map(p => typename(p.paramTypeOpt.get._2))
 
-  protected def matchFunDefOrDcl(t: BaseClazz[AstNode], fn: FunDefOrDcl => Boolean): Boolean =
-    t match {
-      case f: FunDefOrDclClazz => fn(f.t); case _ => false
-    }
+  protected def matchFunDefOrDcl(t: BaseClazz[AstNode], fn: FunDefOrDcl => Boolean): Option[Int] =
+    t.subs.collectFirst { case f: FunDefOrDclClazz if fn(f.t) => f.t.nameToken.offset }
 
   protected def methodMatch(name: String, paramTypesMatch: List[String] => Boolean)(t: FunDefOrDcl): Boolean =
     t.nameToken.text == name && paramTypesMatch(getParamTypes(t.paramClauses))

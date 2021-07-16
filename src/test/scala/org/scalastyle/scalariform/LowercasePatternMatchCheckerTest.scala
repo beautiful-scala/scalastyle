@@ -42,7 +42,7 @@ class F1 {
 }
 """
 
-    assertErrors(List(), source)
+    assertErrors(List(columnError(10, 14), columnError(10, 17)), source)
   }
 
   @Test def testKO(): Unit = {
@@ -61,6 +61,6 @@ class F1 {
 }
 """
 
-    assertErrors(List(columnError(11, 9)), source)
+    assertErrors(List(columnError(10, 14), columnError(10, 17), columnError(11, 9)), source)
   }
 }

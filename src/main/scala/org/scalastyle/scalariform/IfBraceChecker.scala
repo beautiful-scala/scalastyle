@@ -21,7 +21,6 @@ import _root_.scalariform.parser.Expr
 import _root_.scalariform.parser.IfExpr
 import org.scalastyle.CombinedAst
 import org.scalastyle.CombinedChecker
-import org.scalastyle.LineColumn
 import org.scalastyle.Lines
 import org.scalastyle.PositionError
 import org.scalastyle.ScalastyleError
@@ -69,11 +68,11 @@ class IfBraceChecker extends CombinedChecker {
     singleLineAllowed: Boolean,
     doubleLineAllowed: Boolean
   ): Boolean = {
-    val ifLine = lines.toLineColumn(t.t.ifToken.offset)
+    val ifLine = lines.toLine(t.t.ifToken.offset)
     val ifBodyLine = firstLineOfGeneralTokens(t.t.body, lines)
 
     val (elseLine, elseBodyLine) = t.t.elseClause match {
-      case Some(e) => (lines.toLineColumn(e.elseToken.offset), firstLineOfGeneralTokens(e.elseBody, lines))
+      case Some(e) => (lines.toLine(e.elseToken.offset), firstLineOfGeneralTokens(e.elseBody, lines))
       case None    => (None, None)
     }
 
@@ -90,9 +89,9 @@ class IfBraceChecker extends CombinedChecker {
     }
   }
 
-  private[this] def sameLine(l1: Option[LineColumn], l2: Option[LineColumn]) =
+  private[this] def sameLine(l1: Option[Int], l2: Option[Int]) =
     (l1, l2) match {
-      case (Some(x), Some(y)) => x.line == y.line
+      case (Some(x), Some(y)) => x == y
       case _                  => true
     }
 
@@ -102,7 +101,7 @@ class IfBraceChecker extends CombinedChecker {
       body.contents.head match {
         case e: BlockExpr => None
         case e: IfExpr    => None
-        case e: Any       => lines.toLineColumn(e.tokens.head.offset)
+        case e: Any       => lines.toLine(e.tokens.head.offset)
       }
     } else
       None

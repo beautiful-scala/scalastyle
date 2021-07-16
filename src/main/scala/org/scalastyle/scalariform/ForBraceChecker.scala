@@ -45,9 +45,9 @@ class ForBraceChecker extends CombinedChecker {
   private def validSingleLine(t: ForExpr, lines: Lines) = {
     singleLineAllowed && {
       val singleLine = for {
-        start <- lines.toLineColumn(t.forToken.offset)
-        end   <- lines.toLineColumn(t.tokens.last.offset)
-        if start.line == end.line
+        start <- lines.toLine(t.forToken.offset)
+        end   <- lines.toLine(t.tokens.last.offset)
+        if start == end
       } yield ()
 
       singleLine.isDefined

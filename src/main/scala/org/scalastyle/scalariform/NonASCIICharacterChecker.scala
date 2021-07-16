@@ -18,7 +18,7 @@ package org.scalastyle.scalariform
 
 import java.util.regex.Pattern
 
-import _root_.scalariform.lexer.{Token, Tokens}
+import _root_.scalariform.lexer.{Comment, Token, Tokens}
 import _root_.scalariform.parser.CompilationUnit
 import org.scalastyle.PositionError
 import org.scalastyle.ScalariformChecker
@@ -35,7 +35,12 @@ class NonASCIICharacterChecker extends ScalariformChecker {
     getBoolean("allowStringLiterals", defaultAllowStringLiterals)
 
   override def verify(ast: CompilationUnit): List[ScalastyleError] =
-    ast.tokens.filter(hasNonAsciiChars).map(x => PositionError(x.offset))
+    ast.tokens.flatMap(getTokenNonAsciiChars(_).map(PositionError(_)))
+
+  private def getTokenNonAsciiChars(x: Token): Option[Int] =
+    x.associatedWhitespaceAndComments.tokens
+      .collectFirst { case c: Comment if hasNonAsciiChars(c.token) => c.token.offset }
+      .orElse(if (hasNonAsciiChars(x)) Some(x.offset) else None)
 
   private def hasNonAsciiChars(x: Token) = {
     x.rawText.trim.nonEmpty &&

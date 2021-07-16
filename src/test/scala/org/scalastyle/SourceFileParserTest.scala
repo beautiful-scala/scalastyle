@@ -28,11 +28,11 @@ class SourceFileParserTest extends AssertionsForJUnit {
   def parseEmptyFile(): Unit = {
     val configPath = "src/test/resources/config/scalastyle_config.xml"
     val config = ScalastyleConfiguration.readFromXml(configPath)
-    val checks = config.checks.filter(_.enabled)
     val sourcePath = new File("src/test/resources/testfiles/EmptyClass.scala")
     val sourceFile =
       new DirectoryFileSpec(sourcePath.getAbsolutePath(), encoding = None, sourcePath.getAbsoluteFile())
-    val msgs = new CheckerUtils().verifyFile(config, checks, sourceFile)
+    val utils = new CheckerUtils()
+    val msgs = utils.verifyFile(config, utils.createChecks(config), sourceFile)
     assertEquals(Nil, msgs)
   }
 }

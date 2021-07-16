@@ -39,6 +39,7 @@ class Foobar {
       5 match {
         case 4 =>
         case 5 =>
+        case 6 =>
         case _ =>
       }
     } else {
@@ -49,7 +50,6 @@ class Foobar {
       3
     }
   }
-
   def barbar(i: Int): Int = {
     if (i == 1) {
       5
@@ -64,7 +64,8 @@ class Foobar {
       var f = 0
       while (f > 0) {}
       do {} while (f > 0)
-      for (t <- List())
+      for (t <- List()) {}
+      for (t <- List()) yield {}
       3
     }
   }
@@ -118,7 +119,7 @@ class Foobar {
 """
 
     assertErrors(
-      List(columnError(5, 6, List("4", "3")), columnError(21, 6, List("4", "3"))),
+      List(columnError(5, 6, List("4", "3")), columnError(23, 8, List("4", "3"))),
       source,
       Map("maximum" -> "3")
     )

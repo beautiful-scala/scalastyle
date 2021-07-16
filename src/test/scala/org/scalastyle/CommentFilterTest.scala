@@ -37,7 +37,7 @@ class CommentFilterTest extends AssertionsForJUnit {
 
   @Test def testOffOn(): Unit = {
     assertCommentFilter(
-      List(CommentFilter(None, Some(LineColumn(2, 0)), Some(LineColumn(3, 0)))),
+      List(CommentFilter(None, Some(2), Some(3))),
       """
 // scalastyle:off
 // scalastyle:on"""
@@ -46,7 +46,7 @@ class CommentFilterTest extends AssertionsForJUnit {
 
   @Test def testOffOnVariousWhitespace(): Unit = {
     assertCommentFilter(
-      List(CommentFilter(None, Some(LineColumn(2, 0)), Some(LineColumn(3, 1)))),
+      List(CommentFilter(None, Some(2), Some(3))),
       """
 //  scalastyle:off
  //  scalastyle:on """
@@ -56,8 +56,8 @@ class CommentFilterTest extends AssertionsForJUnit {
   @Test def testOffOnIds(): Unit = {
     assertCommentFilter(
       List(
-        CommentFilter(Some("magic.number"), Some(LineColumn(2, 0)), Some(LineColumn(4, 0))),
-        CommentFilter(Some("class.name"), Some(LineColumn(3, 0)), Some(LineColumn(5, 1)))
+        CommentFilter(Some("magic.number"), Some(2), Some(4)),
+        CommentFilter(Some("class.name"), Some(3), Some(5))
       ),
       """
 //  scalastyle:off magic.number
@@ -70,9 +70,9 @@ class CommentFilterTest extends AssertionsForJUnit {
   @Test def testOffOnMultipleIds(): Unit = {
     assertCommentFilter(
       List(
-        CommentFilter(Some("magic.number"), Some(LineColumn(2, 0)), Some(LineColumn(4, 0))),
-        CommentFilter(Some("class.name"), Some(LineColumn(3, 0)), Some(LineColumn(5, 1))),
-        CommentFilter(Some("object.name"), Some(LineColumn(2, 0)), None)
+        CommentFilter(Some("magic.number"), Some(2), Some(4)),
+        CommentFilter(Some("class.name"), Some(3), Some(5)),
+        CommentFilter(Some("object.name"), Some(2), None)
       ),
       """
 //  scalastyle:off magic.number object.name
@@ -85,9 +85,9 @@ class CommentFilterTest extends AssertionsForJUnit {
   @Test def testOffOnOpenEnds(): Unit = {
     assertCommentFilter(
       List(
-        CommentFilter(Some("magic.number"), Some(LineColumn(2, 0)), Some(LineColumn(3, 0))),
-        CommentFilter(Some("object.name"), Some(LineColumn(5, 1)), None),
-        CommentFilter(Some("class.name"), Some(LineColumn(2, 0)), None)
+        CommentFilter(Some("magic.number"), Some(2), Some(3)),
+        CommentFilter(Some("object.name"), Some(5), None),
+        CommentFilter(Some("class.name"), Some(2), None)
       ),
       """
 //  scalastyle:off magic.number class.name
@@ -105,9 +105,9 @@ class CommentFilterTest extends AssertionsForJUnit {
 some code //   scalastyle:ignore
 """
     val expected = List(
-      CommentFilter(None, Some(LineColumn(2, 0)), Some(LineColumn(3, 0))),
-      CommentFilter(Some("test"), Some(LineColumn(3, 0)), Some(LineColumn(4, 0))),
-      CommentFilter(None, Some(LineColumn(4, 0)), Some(LineColumn(5, 0)))
+      CommentFilter(None, Some(2), Some(3)),
+      CommentFilter(Some("test"), Some(3), Some(4)),
+      CommentFilter(None, Some(4), Some(5))
     )
     assertCommentFilter(expected, source)
   }
@@ -120,10 +120,10 @@ some code //   scalastyle:ignore
 // scalastyle:off magic.number
 """
     val expected = List(
-      CommentFilter(Some("magic.number"), Some(LineColumn(3, 0)), Some(LineColumn(4, 0))),
-      CommentFilter(Some("magic.number"), Some(LineColumn(5, 0)), Some(LineColumn(6, 0))),
-      CommentFilter(Some("magic.number"), Some(LineColumn(2, 0)), Some(LineColumn(4, 0))),
-      CommentFilter(Some("magic.number"), Some(LineColumn(6, 0)), None)
+      CommentFilter(Some("magic.number"), Some(3), Some(4)),
+      CommentFilter(Some("magic.number"), Some(5), Some(6)),
+      CommentFilter(Some("magic.number"), Some(2), Some(4)),
+      CommentFilter(Some("magic.number"), Some(6), None)
     )
     assertCommentFilter(expected, source)
   }
@@ -150,13 +150,13 @@ class foobar {
 }
 """
     val expected = List(
-      CommentFilter(Some("class.name"), Some(LineColumn(6, 0)), Some(LineColumn(7, 0))),
-      CommentFilter(None, Some(LineColumn(10, 0)), Some(LineColumn(11, 0))),
-      CommentFilter(Some("class.name"), Some(LineColumn(14, 0)), Some(LineColumn(15, 0))),
-      CommentFilter(Some("magic.number"), Some(LineColumn(18, 0)), Some(LineColumn(19, 0))),
-      CommentFilter(None, Some(LineColumn(11, 2)), Some(LineColumn(13, 2))),
-      CommentFilter(None, Some(LineColumn(15, 2)), Some(LineColumn(17, 2))),
-      CommentFilter(None, Some(LineColumn(19, 2)), None)
+      CommentFilter(Some("class.name"), Some(6), Some(7)),
+      CommentFilter(None, Some(10), Some(11)),
+      CommentFilter(Some("class.name"), Some(14), Some(15)),
+      CommentFilter(Some("magic.number"), Some(18), Some(19)),
+      CommentFilter(None, Some(11), Some(13)),
+      CommentFilter(None, Some(15), Some(17)),
+      CommentFilter(None, Some(19), None)
     )
     assertCommentFilter(expected, source)
   }

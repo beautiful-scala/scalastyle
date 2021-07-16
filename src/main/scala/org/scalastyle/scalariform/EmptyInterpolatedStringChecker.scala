@@ -30,7 +30,7 @@ class EmptyInterpolatedStringChecker extends ScalariformChecker {
       List(left, right) <- ast.tokens.sliding(2)
       if left.tokenType == INTERPOLATION_ID && typesSupportingVariables.contains(left.text) &&
       interpolationRegex.findFirstIn(right.text).isEmpty
-    } yield PositionError(right.offset)
+    } yield PositionError(left.offset)
 
     it.toList
   }

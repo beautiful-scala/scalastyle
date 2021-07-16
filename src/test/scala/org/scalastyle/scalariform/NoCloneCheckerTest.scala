@@ -47,7 +47,7 @@ class CloneKO {
 }
 """
 
-    assertErrors(List(columnError(4, 6)), source)
+    assertErrors(List(columnError(5, 6)), source)
   }
 
   @Test def testObjectOK(): Unit = {
@@ -71,6 +71,6 @@ object CloneKO {
 }
 """
 
-    assertErrors(List(columnError(4, 7)), source)
+    assertErrors(List(columnError(5, 6)), source)
   }
 }

@@ -34,13 +34,13 @@ class TodoCommentChecker extends CombinedChecker {
   def verify(ast: CombinedAst): List[ScalastyleError] = {
     val words = getString("words", defaultWords)
     val split = words.split("\\|").map(Pattern.quote).mkString("|")
-    val regex = ("""(?i)(//|/\*|/\*\*|\*)\s?(""" + split + """)(:?)\s+""").r
+    val regex = ("""(?i)(?:^//|^/\*|^/\*\*|\*)\s?(""" + split + """):?\s+""").r.unanchored
 
     for {
       t  <- ast.compilationUnit.tokens
       at <- t.associatedWhitespaceAndComments
       if Tokens.COMMENTS.contains(at.token.tokenType)
-      if at.text.split("\n").exists(s => regex.findFirstIn(s).isDefined)
-    } yield PositionError(at.token.offset, List(words))
+      tag <- at.text.split("\n").view.collectFirst { case regex(tag) => tag }
+    } yield PositionError(at.token.offset, List(tag))
   }
 }
